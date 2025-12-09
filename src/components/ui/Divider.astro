@@ -1,0 +1,111 @@
+---
+// src/components/ui/Divider.astro
+// Created: Visual divider with optional label and various styles
+
+interface Props {
+  orientation?: 'horizontal' | 'vertical';
+  variant?: 'solid' | 'dashed' | 'dotted' | 'gradient';
+  label?: string;
+  labelPosition?: 'left' | 'center' | 'right';
+  spacing?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const {
+  orientation = 'horizontal',
+  variant = 'solid',
+  label,
+  labelPosition = 'center',
+  spacing = 'md',
+  class: className,
+} = Astro.props;
+
+// Spacing styles
+const spacingStyles = {
+  sm: orientation === 'horizontal' ? 'my-4' : 'mx-4',
+  md: orientation === 'horizontal' ? 'my-6' : 'mx-6',
+  lg: orientation === 'horizontal' ? 'my-8' : 'mx-8',
+};
+
+// Variant styles
+const variantStyles = {
+  solid: 'border-solid',
+  dashed: 'border-dashed',
+  dotted: 'border-dotted',
+  gradient: 'border-none',
+};
+
+// Label position styles
+const labelPositionStyles = {
+  left: 'justify-start',
+  center: 'justify-center',
+  right: 'justify-end',
+};
+---
+
+{orientation === 'horizontal' ? (
+  label ? (
+    <div
+      class:list={[
+        'flex items-center gap-4',
+        labelPositionStyles[labelPosition],
+        spacingStyles[spacing],
+        className,
+      ]}
+      role="separator"
+    >
+      {labelPosition !== 'left' && (
+        <div
+          class:list={[
+            'flex-1 h-px',
+            variant === 'gradient'
+              ? 'bg-gradient-to-r from-transparent via-[color:var(--color-border)] to-[color:var(--color-border)]'
+              : 'border-t border-[color:var(--color-border)]',
+            variantStyles[variant],
+          ]}
+        />
+      )}
+      
+      <span class="text-sm text-[color:var(--color-text-muted)] px-2 whitespace-nowrap">
+        {label}
+      </span>
+      
+      {labelPosition !== 'right' && (
+        <div
+          class:list={[
+            'flex-1 h-px',
+            variant === 'gradient'
+              ? 'bg-gradient-to-r from-[color:var(--color-border)] via-[color:var(--color-border)] to-transparent'
+              : 'border-t border-[color:var(--color-border)]',
+            variantStyles[variant],
+          ]}
+        />
+      )}
+    </div>
+  ) : (
+    <hr
+      class:list={[
+        'border-0 border-t border-[color:var(--color-border)]',
+        variant === 'gradient' && 'h-px bg-gradient-to-r from-transparent via-[color:var(--color-border)] to-transparent border-none',
+        variantStyles[variant],
+        spacingStyles[spacing],
+        className,
+      ]}
+      role="separator"
+    />
+  )
+) : (
+  <div
+    class:list={[
+      'inline-block w-px h-full min-h-[1rem] self-stretch',
+      variant === 'gradient'
+        ? 'bg-gradient-to-b from-transparent via-[color:var(--color-border)] to-transparent'
+        : 'border-l border-[color:var(--color-border)]',
+      variantStyles[variant],
+      spacingStyles[spacing],
+      className,
+    ]}
+    role="separator"
+    aria-orientation="vertical"
+  />
+)}

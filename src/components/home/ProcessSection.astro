@@ -1,0 +1,100 @@
+---
+// src/components/home/ProcessSection.astro
+// Created: Homepage process/how we work section
+
+import SectionHeader from '../ui/SectionHeader.astro';
+import ProcessStep from '../ui/ProcessStep.astro';
+
+const processSteps = [
+  {
+    step: 1,
+    title: 'Discovery Call',
+    description: 'We start with a free 30-minute call to understand your business, goals, and challenges. No sales pitch—just honest conversation.',
+  },
+  {
+    step: 2,
+    title: 'Strategy & Proposal',
+    description: 'Within 3 days, you receive a custom strategy deck with clear deliverables, timeline, and transparent pricing. No surprises.',
+  },
+  {
+    step: 3,
+    title: 'Execution',
+    description: 'Once approved, we hit the ground running. Weekly updates, real-time dashboards, and direct access to your dedicated team.',
+  },
+  {
+    step: 4,
+    title: 'Optimize & Scale',
+    description: 'We continuously optimize based on data. Monthly strategy reviews ensure we\'re always pushing for better results.',
+  },
+];
+---
+
+<section
+  class="section"
+  aria-labelledby="process-heading"
+>
+  <div class="container">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      {/* Left side: Section header */}
+      <div>
+        <SectionHeader
+          eyebrow="How We Work"
+          title="Simple Process, Exceptional Results"
+          description="No bureaucracy, no endless meetings. Just a streamlined process designed to get you results fast."
+          align="left"
+          titleAs="h2"
+        />
+
+        {/* Additional info */}
+        <div class="mt-8 space-y-4" data-animate="fade-up" data-delay="0.2">
+          <div class="flex items-start gap-3">
+            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-[color:var(--color-accent-subtle)] flex items-center justify-center mt-0.5">
+              <svg class="w-4 h-4 text-[color:var(--color-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p class="text-[color:var(--color-text-secondary)]">
+              <strong class="text-[color:var(--color-text-primary)]">Average project kickoff:</strong> 5 business days from signed contract
+            </p>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-[color:var(--color-accent-subtle)] flex items-center justify-center mt-0.5">
+              <svg class="w-4 h-4 text-[color:var(--color-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p class="text-[color:var(--color-text-secondary)]">
+              <strong class="text-[color:var(--color-text-primary)]">Direct communication:</strong> Dedicated Slack channel or WhatsApp group
+            </p>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-[color:var(--color-accent-subtle)] flex items-center justify-center mt-0.5">
+              <svg class="w-4 h-4 text-[color:var(--color-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p class="text-[color:var(--color-text-secondary)]">
+              <strong class="text-[color:var(--color-text-primary)]">Flexible contracts:</strong> Month-to-month after initial term
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Right side: Process steps */}
+      <div class="relative" data-stagger="0.15">
+        {processSteps.map((item, index) => (
+          <div data-stagger-item>
+            <ProcessStep
+              step={item.step}
+              title={item.title}
+              description={item.description}
+              isLast={index === processSteps.length - 1}
+              isCompleted={false}
+              variant="vertical"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

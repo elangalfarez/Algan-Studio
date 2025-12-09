@@ -1,0 +1,250 @@
+---
+// src/components/global/Header.astro
+// Created: Sticky header with mega menu, mobile navigation, and scroll effects
+
+import { NAVIGATION, SITE_CONFIG } from '../../lib/constants';
+import MobileMenu from './MobileMenu';
+import { 
+  Search, 
+  Code, 
+  Smartphone, 
+  Palette, 
+  Share2, 
+  Users, 
+  ShoppingBag,
+  TrendingUp 
+} from 'lucide-react';
+
+const iconMap: Record<string, any> = {
+  google: TrendingUp,
+  meta: Share2,
+  shopping: ShoppingBag,
+  users: Users,
+  search: Search,
+  share: Share2,
+  code: Code,
+  smartphone: Smartphone,
+  palette: Palette,
+};
+
+const currentPath = Astro.url.pathname;
+---
+
+<header
+  id="site-header"
+  class="fixed top-0 left-0 right-0 z-sticky transition-all duration-normal"
+>
+  <div
+    class="header-bg absolute inset-0 bg-bg-primary/80 backdrop-blur-lg border-b border-border opacity-0 transition-opacity duration-normal"
+  >
+  </div>
+
+  <div class="container relative">
+    <nav
+      class="flex items-center justify-between h-header transition-[height] duration-normal"
+      aria-label="Main navigation"
+    >
+      <!-- Logo -->
+      <a
+        href="/"
+        class="relative z-10 flex items-center gap-2 text-text-primary font-bold text-xl tracking-tight hover:opacity-80 transition-opacity"
+        aria-label={`${SITE_CONFIG.name} - Home`}
+      >
+        <span class="text-h4 font-bold">Algan</span>
+        <span class="text-accent">Studio</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden lg:flex items-center gap-8">
+        {
+          NAVIGATION.main.map((item: any) => (
+            <div class="relative group">
+              {item.megaMenu ? (
+                <>
+                  <button
+                    class={`nav-link flex items-center gap-1 py-2 text-body font-medium transition-colors
+                      ${currentPath.startsWith(item.href) ? 'text-accent' : 'text-text-secondary hover:text-text-primary'}`}
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                  >
+                    {item.label}
+                    <svg
+                      class="w-4 h-4 transition-transform group-hover:rotate-180"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+
+                  {/* Mega Menu */}
+                  <div
+                    class="mega-menu absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-normal"
+                  >
+                    <div class="bg-bg-tertiary rounded-xl shadow-xl border border-border p-6 min-w-[600px]">
+                      <div class="grid grid-cols-3 gap-6">
+                        {item.children?.map((category: { category: string; items: readonly { label: string; href: string; description: string; icon: string }[] }) => (
+                          <div>
+                            <h3 class="text-small font-semibold text-text-muted uppercase tracking-wider mb-3">
+                              {category.category}
+                            </h3>
+                            <ul class="space-y-1">
+                              {category.items.map((subItem: { label: string; href: string; description: string; icon: string }) => {
+                                const IconComponent = iconMap[subItem.icon];
+                                return (
+                                  <li>
+                                    <a
+                                      href={subItem.href}
+                                      class="flex items-start gap-3 p-2 rounded-lg hover:bg-bg-secondary transition-colors group/item"
+                                    >
+                                      <span class="mt-0.5 p-1.5 rounded-md bg-accent-subtle text-accent group-hover/item:bg-accent group-hover/item:text-text-inverse transition-colors">
+                                        {IconComponent && <IconComponent size={16} />}
+                                      </span>
+                                      <div>
+                                        <span class="block text-body font-medium text-text-primary">
+                                          {subItem.label}
+                                        </span>
+                                        <span class="block text-small text-text-muted mt-0.5">
+                                          {subItem.description}
+                                        </span>
+                                      </div>
+                                    </a>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Mega menu footer */}
+                      <div class="mt-6 pt-4 border-t border-border flex items-center justify-between">
+                        <p class="text-small text-text-muted">
+                          Not sure which service? Let us help.
+                        </p>
+                        <a
+                          href="/contact"
+                          class="text-small font-medium text-accent hover:text-accent-hover transition-colors"
+                        >
+                          Book a free consultation →
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <a
+                  href={item.href}
+                  class={`nav-link py-2 text-body font-medium transition-colors relative
+                    ${currentPath === item.href ? 'text-accent' : 'text-text-secondary hover:text-text-primary'}`}
+                >
+                  {item.label}
+                  <span
+                    class={`absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-normal
+                      ${currentPath === item.href ? 'w-full' : 'w-0 group-hover:w-full'}`}
+                  />
+                </a>
+              )}
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- CTA Button -->
+      <div class="hidden lg:flex items-center gap-4">
+        <a
+          href="/contact"
+          class="btn-primary inline-flex items-center justify-center px-5 py-2.5 bg-brand-primary text-text-inverse font-medium rounded-lg hover:bg-accent transition-colors touch-target"
+        >
+          Get a Quote
+        </a>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <MobileMenu client:media="(max-width: 1023px)" navigation={NAVIGATION.main} />
+    </nav>
+  </div>
+</header>
+
+<!-- Spacer for fixed header -->
+<div class="h-header"></div>
+
+<script>
+  // Header scroll behavior
+  const header = document.getElementById('site-header');
+  const headerBg = header?.querySelector('.header-bg');
+  let lastScrollY = 0;
+
+  function updateHeader() {
+    const scrollY = window.scrollY;
+    
+    if (header && headerBg) {
+      // Show background after scroll
+      if (scrollY > 50) {
+        headerBg.classList.remove('opacity-0');
+        headerBg.classList.add('opacity-100');
+        header.querySelector('nav')?.classList.remove('h-header');
+        header.querySelector('nav')?.classList.add('h-header-scrolled');
+      } else {
+        headerBg.classList.add('opacity-0');
+        headerBg.classList.remove('opacity-100');
+        header.querySelector('nav')?.classList.add('h-header');
+        header.querySelector('nav')?.classList.remove('h-header-scrolled');
+      }
+      
+      // Hide/show on scroll direction (optional, can enable if needed)
+      // if (scrollY > lastScrollY && scrollY > 300) {
+      //   header.style.transform = 'translateY(-100%)';
+      // } else {
+      //   header.style.transform = 'translateY(0)';
+      // }
+    }
+    
+    lastScrollY = scrollY;
+  }
+
+  // Throttle scroll handler
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        updateHeader();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  // Initial check
+  updateHeader();
+
+  // Re-run on page transitions
+  document.addEventListener('astro:page-load', updateHeader);
+</script>
+
+<style>
+  /* Ensure mega menu doesn't close when moving to it */
+  .mega-menu {
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+  
+  /* Add slight delay before hiding mega menu */
+  .group:hover .mega-menu {
+    transition-delay: 0s;
+  }
+  
+  .mega-menu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1rem;
+  }
+</style>

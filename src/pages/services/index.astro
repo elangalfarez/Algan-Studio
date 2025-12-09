@@ -1,0 +1,154 @@
+---
+// src/pages/services/index.astro
+// Created: Services listing page with all service categories
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeader from '../../components/ui/SectionHeader.astro';
+import ServiceCard from '../../components/ui/ServiceCard.astro';
+import Button from '../../components/ui/Button.astro';
+import { SERVICES_DATA } from '../../lib/services-data';
+import {
+  TrendingUp, Share2, ShoppingCart, Users, Search,
+  MessageCircle, Code, Smartphone, Palette
+} from 'lucide-react';
+
+// Icon mapping
+const iconMap: Record<string, any> = {
+  'trending-up': TrendingUp,
+  'share-2': Share2,
+  'shopping-cart': ShoppingCart,
+  'users': Users,
+  'search': Search,
+  'share': MessageCircle,
+  'code': Code,
+  'smartphone': Smartphone,
+  'palette': Palette,
+};
+
+// Group services by category
+const servicesByCategory = Object.values(SERVICES_DATA).reduce((acc, service) => {
+  if (!acc[service.category]) {
+    acc[service.category] = [];
+  }
+  acc[service.category].push(service);
+  return acc;
+}, {} as Record<string, typeof SERVICES_DATA[string][]>);
+
+// Order categories
+const categoryOrder = ['Digital Marketing', 'Technology', 'Creative'];
+---
+
+<BaseLayout
+  title="Services"
+  description="Full-stack digital solutions: Google Ads, Meta Ads, SEO, Web Development, App Development, and Design Services. Expert execution for ambitious brands."
+>
+  {/* Hero Section */}
+  <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[color:var(--color-bg-secondary)] via-[color:var(--color-bg-primary)] to-[color:var(--color-accent-subtle)]"></div>
+    
+    <div class="container relative z-10">
+      <div class="max-w-3xl">
+        <nav class="mb-6" aria-label="Breadcrumb">
+          <ol class="flex items-center gap-2 text-sm text-[color:var(--color-text-muted)]">
+            <li>
+              <a href="/" class="hover:text-[color:var(--color-accent)] transition-colors">Home</a>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <span class="text-[color:var(--color-text-secondary)]">Services</span>
+            </li>
+          </ol>
+        </nav>
+
+        <h1 
+          class="text-4xl md:text-5xl lg:text-6xl font-bold text-[color:var(--color-text-primary)] leading-tight mb-6"
+          data-animate="fade-up"
+        >
+          Everything You Need to
+          <span class="text-[color:var(--color-accent)]"> Grow Online</span>
+        </h1>
+
+        <p 
+          class="text-lg md:text-xl text-[color:var(--color-text-tertiary)] max-w-2xl leading-relaxed"
+          data-animate="fade-up"
+          data-delay="0.1"
+        >
+          From strategy to execution, we handle every aspect of your digital presence. 
+          No fluff, no middlemen—just world-class results.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* Services by Category */}
+  {categoryOrder.map((category, categoryIndex) => (
+    <section 
+      class:list={[
+        'section',
+        categoryIndex % 2 === 1 && 'bg-[color:var(--color-bg-secondary)]',
+      ]}
+    >
+      <div class="container">
+        <SectionHeader
+          eyebrow={category}
+          title={`${category} Services`}
+          titleAs="h2"
+        />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+          {servicesByCategory[category]?.map((service, index) => {
+            const IconComponent = iconMap[service.icon] || TrendingUp;
+            return (
+              <div data-animate="fade-up" data-delay={String(index * 0.1)}>
+                <ServiceCard
+                  title={service.title}
+                  description={service.description}
+                  href={`/services/${service.id}`}
+                  features={service.features.slice(0, 3).map(f => f.title)}
+                >
+                  <Fragment slot="icon">
+                    <IconComponent size={24} />
+                  </Fragment>
+                </ServiceCard>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  {/* CTA Section */}
+  <section class="section relative overflow-hidden bg-[color:var(--color-brand-primary)]">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+    </div>
+
+    <div class="container relative z-10">
+      <div class="max-w-3xl mx-auto text-center text-white">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+          Not Sure Which Service You Need?
+        </h2>
+        <p class="text-lg text-white/80 mb-8">
+          Book a free strategy call. We'll analyze your situation and recommend 
+          the best approach—even if that means working with someone else.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[color:var(--color-brand-primary)] font-semibold rounded-xl hover:bg-white/90 transition-all hover:shadow-lg touch-target"
+          >
+            Schedule a Call
+          </a>
+          <a
+            href="/pricing"
+            class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent text-white font-semibold rounded-xl border-2 border-white/30 hover:bg-white/10 hover:border-white/50 transition-all touch-target"
+          >
+            View All Pricing
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

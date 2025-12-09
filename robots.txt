@@ -1,0 +1,36 @@
+# robots.txt
+# Created: Robots configuration for Algan Studio website
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes (if any)
+Disallow: /api/
+Disallow: /_astro/
+
+# Sitemap location
+Sitemap: https://algan.id/sitemap-index.xml
+
+# Crawl delay (optional, remove if not needed)
+# Crawl-delay: 1
+
+# Specific rules for common bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Block bad bots (optional)
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /

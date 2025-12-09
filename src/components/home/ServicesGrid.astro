@@ -1,0 +1,89 @@
+---
+// src/components/home/ServicesGrid.astro
+// Created: Homepage services overview grid with cards and hover effects
+
+import SectionHeader from '../ui/SectionHeader.astro';
+import ServiceCard from '../ui/ServiceCard.astro';
+import Button from '../ui/Button.astro';
+import { SERVICES } from '../../lib/constants';
+import {
+  TrendingUp,
+  Share2,
+  ShoppingBag,
+  Users,
+  Search,
+  MessageCircle,
+  Code,
+  Smartphone,
+  Palette,
+} from 'lucide-react';
+
+// Icon mapping
+const iconComponents: Record<string, any> = {
+  google: TrendingUp,
+  meta: Share2,
+  shopping: ShoppingBag,
+  users: Users,
+  search: Search,
+  share: MessageCircle,
+  code: Code,
+  smartphone: Smartphone,
+  palette: Palette,
+};
+
+// Get first 6 services for homepage
+const featuredServices = SERVICES.slice(0, 6);
+---
+
+<section
+  id="services"
+  class="section bg-[color:var(--color-bg-secondary)]"
+  aria-labelledby="services-heading"
+>
+  <div class="container">
+    <SectionHeader
+      eyebrow="What We Do"
+      title="Services Built for Growth"
+      description="From strategy to execution, we handle every aspect of your digital presence. No fluff, just results."
+      titleAs="h2"
+    >
+      <Button variant="text" href="/services">
+        View all services →
+      </Button>
+    </SectionHeader>
+
+    {/* Services Grid */}
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 md:mt-16"
+      data-stagger="0.1"
+    >
+      {featuredServices.map((service) => {
+        const IconComponent = iconComponents[service.icon];
+        return (
+          <div data-stagger-item>
+            <ServiceCard
+              title={service.title}
+              description={service.shortDescription}
+              href={service.href}
+              features={service.features.slice(0, 3)}
+            >
+              <Fragment slot="icon">
+                {IconComponent && <IconComponent size={24} />}
+              </Fragment>
+            </ServiceCard>
+          </div>
+        );
+      })}
+    </div>
+
+    {/* Bottom CTA */}
+    <div class="mt-12 text-center" data-animate="fade-up">
+      <p class="text-[color:var(--color-text-tertiary)] mb-4">
+        Not sure which service you need?
+      </p>
+      <Button variant="secondary" href="/contact">
+        Let's discuss your project
+      </Button>
+    </div>
+  </div>
+</section>

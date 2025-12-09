@@ -1,0 +1,158 @@
+---
+// src/components/services/PricingTable.astro
+// Created: Pricing table component for service pages
+
+import SectionHeader from '../ui/SectionHeader.astro';
+import Button from '../ui/Button.astro';
+import Badge from '../ui/Badge.astro';
+import { Check, X } from 'lucide-react';
+
+interface PricingTier {
+  name: string;
+  price: string;
+  period: string;
+  description: string;
+  features: string[];
+  notIncluded?: string[];
+  cta: string;
+  popular: boolean;
+}
+
+interface Props {
+  tiers: PricingTier[];
+  serviceId: string;
+}
+
+const { tiers, serviceId } = Astro.props;
+---
+
+<section id="pricing" class="section">
+  <div class="container">
+    <SectionHeader
+      eyebrow="Pricing"
+      title="Choose Your Plan"
+      description="Transparent pricing with no hidden fees. Pick the plan that fits your needs."
+      titleAs="h2"
+    />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+      {tiers.map((tier, index) => (
+        <div
+          class:list={[
+            'relative flex flex-col p-6 md:p-8 rounded-2xl border transition-all duration-300',
+            tier.popular
+              ? 'bg-[color:var(--color-brand-primary)] text-white border-[color:var(--color-brand-primary)] shadow-[var(--shadow-xl)] scale-[1.02] lg:scale-105'
+              : 'bg-[color:var(--color-bg-primary)] border-[color:var(--color-border)] hover:border-[color:var(--color-accent)]/30 hover:shadow-[var(--shadow-lg)]',
+          ]}
+          data-animate="fade-up"
+          data-delay={String(index * 0.1)}
+        >
+          {/* Popular badge */}
+          {tier.popular && (
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+              <Badge variant="primary" size="sm">
+                Most Popular
+              </Badge>
+            </div>
+          )}
+
+          {/* Tier name */}
+          <h3 class:list={[
+            'text-xl font-bold mb-2',
+            tier.popular ? 'text-white' : 'text-[color:var(--color-text-primary)]',
+          ]}>
+            {tier.name}
+          </h3>
+
+          {/* Description */}
+          <p class:list={[
+            'text-sm mb-4',
+            tier.popular ? 'text-white/80' : 'text-[color:var(--color-text-muted)]',
+          ]}>
+            {tier.description}
+          </p>
+
+          {/* Price */}
+          <div class="mb-6">
+            <span class:list={[
+              'text-4xl font-bold',
+              tier.popular ? 'text-white' : 'text-[color:var(--color-text-primary)]',
+            ]}>
+              {tier.price}
+            </span>
+            {tier.period && (
+              <span class:list={[
+                'text-sm',
+                tier.popular ? 'text-white/70' : 'text-[color:var(--color-text-muted)]',
+              ]}>
+                {tier.period}
+              </span>
+            )}
+          </div>
+
+          {/* Features */}
+          <ul class="space-y-3 mb-8 flex-grow">
+            {tier.features.map((feature) => (
+              <li class="flex items-start gap-3">
+                <Check class:list={[
+                  'w-5 h-5 flex-shrink-0 mt-0.5',
+                  tier.popular ? 'text-white' : 'text-[color:var(--color-accent)]',
+                ]} />
+                <span class:list={[
+                  'text-sm',
+                  tier.popular ? 'text-white/90' : 'text-[color:var(--color-text-secondary)]',
+                ]}>
+                  {feature}
+                </span>
+              </li>
+            ))}
+            
+            {/* Not included features */}
+            {tier.notIncluded?.map((feature) => (
+              <li class="flex items-start gap-3 opacity-50">
+                <X class:list={[
+                  'w-5 h-5 flex-shrink-0 mt-0.5',
+                  tier.popular ? 'text-white/50' : 'text-[color:var(--color-text-muted)]',
+                ]} />
+                <span class:list={[
+                  'text-sm line-through',
+                  tier.popular ? 'text-white/50' : 'text-[color:var(--color-text-muted)]',
+                ]}>
+                  {feature}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          {/* CTA Button */}
+          {tier.popular ? (
+            <a
+              href={tier.cta === 'Contact Sales' ? '/contact?service=' + serviceId : `/contact?service=${serviceId}&plan=${tier.name.toLowerCase()}`}
+              class="inline-flex items-center justify-center w-full py-3 px-6 bg-white text-[color:var(--color-brand-primary)] font-semibold rounded-xl hover:bg-white/90 transition-colors touch-target"
+            >
+              {tier.cta}
+            </a>
+          ) : (
+            <Button
+              variant={tier.cta === 'Contact Sales' ? 'secondary' : 'primary'}
+              href={tier.cta === 'Contact Sales' ? '/contact?service=' + serviceId : `/contact?service=${serviceId}&plan=${tier.name.toLowerCase()}`}
+              fullWidth
+            >
+              {tier.cta}
+            </Button>
+          )}
+        </div>
+      ))}
+    </div>
+
+    {/* Additional note */}
+    <div class="mt-12 text-center">
+      <p class="text-[color:var(--color-text-muted)] text-sm">
+        All prices exclude applicable taxes. Ad spend budget is billed separately.
+        <a href="/contact" class="text-[color:var(--color-accent)] hover:underline ml-1">
+          Questions? Let's talk →
+        </a>
+      </p>
+    </div>
+  </div>
+</section>

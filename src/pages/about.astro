@@ -1,0 +1,229 @@
+---
+// src/pages/about.astro
+// Created: About page with team, values, and timeline
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
+import TeamMember from '../components/about/TeamMember.astro';
+import CompanyValues from '../components/about/CompanyValues.astro';
+import CompanyTimeline from '../components/about/CompanyTimeline.astro';
+import Button from '../components/ui/Button.astro';
+import { TEAM_MEMBERS, COMPANY_STATS } from '../lib/team-data';
+---
+
+<BaseLayout
+  title="About Us"
+  description="Kenali Algan Studio - tim profesional digital marketing, web development, dan design yang membantu bisnis Indonesia tumbuh."
+>
+  {/* Hero Section */}
+  <section class="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[color:var(--color-bg-secondary)] via-[color:var(--color-bg-primary)] to-[color:var(--color-accent-subtle)]"></div>
+    
+    {/* Decorative elements */}
+    <div class="absolute top-20 right-10 w-72 h-72 bg-[color:var(--color-accent)]/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-20 left-10 w-96 h-96 bg-[color:var(--color-brand-primary)]/5 rounded-full blur-3xl"></div>
+    
+    <div class="container relative z-10">
+      <div class="max-w-3xl mx-auto text-center">
+        <nav class="mb-6" aria-label="Breadcrumb">
+          <ol class="flex items-center justify-center gap-2 text-sm text-[color:var(--color-text-muted)]">
+            <li>
+              <a href="/" class="hover:text-[color:var(--color-accent)] transition-colors">Home</a>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <span class="text-[color:var(--color-text-secondary)]">About</span>
+            </li>
+          </ol>
+        </nav>
+
+        <h1 
+          class="text-4xl md:text-5xl lg:text-6xl font-bold text-[color:var(--color-text-primary)] leading-tight mb-6"
+          data-animate="fade-up"
+        >
+          Membantu Bisnis 
+          <span class="text-[color:var(--color-accent)]">Berkembang</span> di Era Digital
+        </h1>
+
+        <p 
+          class="text-lg md:text-xl text-[color:var(--color-text-tertiary)] leading-relaxed mb-8"
+          data-animate="fade-up"
+          data-delay="0.1"
+        >
+          Kami adalah tim passionate yang berkomitmen membantu bisnis Indonesia 
+          sukses di landscape digital yang terus berkembang.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* Stats Section */}
+  <section class="py-12 border-y border-[color:var(--color-border)] bg-[color:var(--color-bg-secondary)]">
+    <div class="container">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {COMPANY_STATS.map((stat, index) => (
+          <div 
+            class="text-center"
+            data-animate="fade-up"
+            data-delay={String(index * 0.1)}
+          >
+            <div class="text-3xl md:text-4xl font-bold text-[color:var(--color-accent)] mb-1">
+              {stat.value}
+            </div>
+            <div class="text-sm font-medium text-[color:var(--color-text-primary)] mb-1">
+              {stat.label}
+            </div>
+            <div class="text-xs text-[color:var(--color-text-muted)]">
+              {stat.description}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* Story Section */}
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div data-animate="fade-up">
+          <span class="text-[color:var(--color-accent)] text-sm font-semibold uppercase tracking-wider mb-4 block">
+            Our Story
+          </span>
+          <h2 class="text-3xl md:text-4xl font-bold text-[color:var(--color-text-primary)] mb-6">
+            Dari Passion Menjadi Purpose
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>
+              Algan Studio didirikan pada 2018 dengan satu misi sederhana: membantu bisnis Indonesia 
+              berkembang di era digital. Dimulai sebagai freelance consultant, kami kini telah 
+              berkembang menjadi full-service digital agency dengan tim 35+ profesional.
+            </p>
+            <p>
+              Kami percaya bahwa setiap bisnis, besar atau kecil, berhak mendapat akses ke expertise 
+              digital marketing dan teknologi terbaik. Itulah mengapa kami bekerja keras untuk 
+              memberikan solusi yang terukur, terjangkau, dan efektif.
+            </p>
+            <p>
+              Dengan lebih dari 500 project selesai dan 200+ active clients, kami bangga menjadi 
+              partner pertumbuhan bagi bisnis-bisnis Indonesia dari berbagai industri.
+            </p>
+          </div>
+        </div>
+
+        {/* Image placeholder */}
+        <div 
+          class="relative aspect-square rounded-2xl overflow-hidden bg-[color:var(--color-bg-secondary)]"
+          data-animate="fade-up"
+          data-delay="0.2"
+        >
+          <div class="absolute inset-0 bg-gradient-to-br from-[color:var(--color-accent)]/10 to-[color:var(--color-brand-primary)]/10 flex items-center justify-center">
+            <svg class="w-24 h-24 text-[color:var(--color-text-muted)] opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+          {/* Decorative elements */}
+          <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-[color:var(--color-accent)] rounded-2xl -z-10"></div>
+          <div class="absolute -top-4 -left-4 w-24 h-24 border-2 border-[color:var(--color-accent)] rounded-2xl -z-10"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Values Section */}
+  <CompanyValues />
+
+  {/* Team Section */}
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Team"
+        title="Meet Our Team"
+        description="Tim profesional yang berdedikasi untuk kesuksesan bisnis Anda."
+        titleAs="h2"
+        align="center"
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-12">
+        {TEAM_MEMBERS.map((member, index) => (
+          <div data-animate="fade-up" data-delay={String((index % 4) * 0.1)}>
+            <TeamMember
+              name={member.name}
+              role={member.role}
+              department={member.department}
+              bio={member.bio}
+              image={member.image}
+              social={member.social}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* Timeline Section */}
+  <CompanyTimeline />
+
+  {/* CTA Section */}
+  <section class="section bg-[color:var(--color-brand-primary)] relative overflow-hidden">
+    {/* Pattern */}
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+    </div>
+
+    <div class="container relative z-10">
+      <div class="max-w-2xl mx-auto text-center text-white">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+          Siap Bekerja Sama?
+        </h2>
+        <p class="text-lg text-white/80 mb-8">
+          Mari diskusikan bagaimana kami bisa membantu bisnis Anda berkembang.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button href="/contact" variant="secondary" size="lg">
+            Hubungi Kami
+          </Button>
+          <Button 
+            href="https://wa.me/6281234567890?text=Halo%20Algan%20Studio"
+            variant="ghost"
+            size="lg"
+            class="text-white border-white/30 hover:bg-white/10"
+          >
+            Chat WhatsApp
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+{/* Organization Schema */}
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Algan Studio",
+  "url": "https://algan.id",
+  "logo": "https://algan.id/images/logo.png",
+  "description": "Digital agency yang membantu bisnis Indonesia berkembang melalui digital marketing, web development, dan design.",
+  "foundingDate": "2018",
+  "founders": [
+    {
+      "@type": "Person",
+      "name": "Ahmad Rizki"
+    }
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Jakarta",
+    "addressCountry": "ID"
+  },
+  "numberOfEmployees": {
+    "@type": "QuantitativeValue",
+    "value": 35
+  },
+  "sameAs": [
+    "https://instagram.com/alganstudio",
+    "https://linkedin.com/company/alganstudio",
+    "https://twitter.com/alganstudio"
+  ]
+})} />

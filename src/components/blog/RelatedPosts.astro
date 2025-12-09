@@ -1,0 +1,48 @@
+---
+// src/components/blog/RelatedPosts.astro
+// Created: Related posts section for blog post pages
+
+import SectionHeader from '../ui/SectionHeader.astro';
+import BlogCard from './BlogCard.astro';
+import { getRelatedBlogPosts } from '../../lib/blog-data';
+
+interface Props {
+  currentSlug: string;
+}
+
+const { currentSlug } = Astro.props;
+
+const relatedPosts = getRelatedBlogPosts(currentSlug).slice(0, 3);
+---
+
+{relatedPosts.length > 0 && (
+  <section class="section bg-[color:var(--color-bg-secondary)]">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Baca Juga"
+        title="Artikel Terkait"
+        description="Pelajari lebih lanjut dengan artikel-artikel berikut."
+        titleAs="h2"
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+        {relatedPosts.map((post, index) => (
+          <div data-animate="fade-up" data-delay={String(index * 0.1)}>
+            <BlogCard
+              slug={post.slug}
+              title={post.title}
+              excerpt={post.excerpt}
+              category={post.category}
+              tags={post.tags}
+              author={post.author}
+              publishedAt={post.publishedAt}
+              readingTime={post.readingTime}
+              image={post.image}
+              imageAlt={post.imageAlt}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

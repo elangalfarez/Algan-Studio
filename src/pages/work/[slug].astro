@@ -1,0 +1,105 @@
+---
+// src/pages/work/[slug].astro
+// Created: Dynamic case study page template
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudyHero from '../../components/work/CaseStudyHero.astro';
+import CaseStudyServices from '../../components/work/CaseStudyServices.astro';
+import CaseStudyContent from '../../components/work/CaseStudyContent.astro';
+import CaseStudyGallery from '../../components/work/CaseStudyGallery.astro';
+import CaseStudyTestimonial from '../../components/work/CaseStudyTestimonial.astro';
+import RelatedWork from '../../components/work/RelatedWork.astro';
+import WorkCTA from '../../components/work/WorkCTA.astro';
+import { CASE_STUDIES, getAllCaseStudyIds, getCaseStudy } from '../../lib/case-studies-data';
+
+export async function getStaticPaths() {
+  const caseStudyIds = getAllCaseStudyIds();
+  
+  return caseStudyIds.map((id) => ({
+    params: { slug: id },
+  }));
+}
+
+const { slug } = Astro.params;
+const caseStudy = getCaseStudy(slug as string);
+
+if (!caseStudy) {
+  return Astro.redirect('/404');
+}
+---
+
+<BaseLayout
+  title={caseStudy.title}
+  description={caseStudy.excerpt}
+  image={caseStudy.images.hero}
+>
+  {/* Hero Section */}
+  <CaseStudyHero
+    title={caseStudy.title}
+    client={caseStudy.client}
+    category={caseStudy.category}
+    tags={caseStudy.tags}
+    excerpt={caseStudy.excerpt}
+    heroImage={caseStudy.images.hero}
+    metrics={caseStudy.metrics}
+    timeline={caseStudy.timeline}
+    year={caseStudy.year}
+  />
+
+  {/* Services Used */}
+  <CaseStudyServices serviceIds={caseStudy.services} />
+
+  {/* Main Content: Challenge, Solution, Results */}
+  <CaseStudyContent
+    challenge={caseStudy.challenge}
+    solution={caseStudy.solution}
+    results={caseStudy.results}
+  />
+
+  {/* Image Gallery */}
+  <CaseStudyGallery
+    images={caseStudy.images.gallery}
+    client={caseStudy.client}
+  />
+
+  {/* Testimonial */}
+  {caseStudy.testimonial && (
+    <CaseStudyTestimonial testimonial={caseStudy.testimonial} />
+  )}
+
+  {/* Related Case Studies */}
+  <RelatedWork currentId={caseStudy.id} />
+
+  {/* CTA */}
+  <WorkCTA
+    title="Want Results Like These?"
+    description={`Let's discuss how we can help your business achieve similar transformations.`}
+  />
+</BaseLayout>
+
+{/* Case Study Schema markup */}
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": caseStudy.title,
+  "description": caseStudy.excerpt,
+  "image": caseStudy.images.hero,
+  "datePublished": `${caseStudy.year}-01-01`,
+  "author": {
+    "@type": "Organization",
+    "name": "Algan Studio",
+    "url": "https://algan.id"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Algan Studio",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://algan.id/images/logo.png"
+    }
+  },
+  "about": {
+    "@type": "Thing",
+    "name": caseStudy.client
+  }
+})} />

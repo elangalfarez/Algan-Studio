@@ -1,0 +1,65 @@
+---
+// src/components/work/CaseStudyServices.astro
+// Created: Services used section for case study pages
+
+import { SERVICES_DATA } from '../../lib/services-data';
+import {
+  TrendingUp, Share2, ShoppingCart, Users, Search,
+  MessageCircle, Code, Smartphone, Palette
+} from 'lucide-react';
+
+interface Props {
+  serviceIds: string[];
+}
+
+const { serviceIds } = Astro.props;
+
+// Icon mapping
+const iconMap: Record<string, any> = {
+  'trending-up': TrendingUp,
+  'share-2': Share2,
+  'shopping-cart': ShoppingCart,
+  'users': Users,
+  'search': Search,
+  'share': MessageCircle,
+  'code': Code,
+  'smartphone': Smartphone,
+  'palette': Palette,
+};
+
+// Get services data
+const services = serviceIds
+  .map(id => SERVICES_DATA[id])
+  .filter(Boolean);
+---
+
+{services.length > 0 && (
+  <section class="py-12 border-y border-[color:var(--color-border)]">
+    <div class="container">
+      <div class="flex flex-col md:flex-row md:items-center gap-6">
+        <div class="flex-shrink-0">
+          <span class="text-sm font-medium text-[color:var(--color-text-muted)] uppercase tracking-wider">
+            Services Used
+          </span>
+        </div>
+        
+        <div class="flex flex-wrap gap-3">
+          {services.map((service) => {
+            const IconComponent = iconMap[service.icon] || TrendingUp;
+            return (
+              <a
+                href={`/services/${service.id}`}
+                class="inline-flex items-center gap-2 px-4 py-2 bg-[color:var(--color-bg-secondary)] rounded-full border border-[color:var(--color-border)] hover:border-[color:var(--color-accent)]/30 hover:bg-[color:var(--color-accent-subtle)] transition-colors"
+              >
+                <IconComponent className="w-4 h-4 text-[color:var(--color-accent)]" />
+                <span class="text-sm font-medium text-[color:var(--color-text-primary)]">
+                  {service.title}
+                </span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </section>
+)}

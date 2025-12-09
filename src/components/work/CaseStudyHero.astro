@@ -1,0 +1,149 @@
+---
+// src/components/work/CaseStudyHero.astro
+// Created: Hero section for individual case study pages
+
+import Badge from '../ui/Badge.astro';
+
+interface Metric {
+  label: string;
+  value: string;
+  description?: string;
+}
+
+interface Props {
+  title: string;
+  client: string;
+  category: string;
+  tags: string[];
+  excerpt: string;
+  heroImage: string;
+  metrics: Metric[];
+  timeline: string;
+  year: number;
+}
+
+const { title, client, category, tags, excerpt, heroImage, metrics, timeline, year } = Astro.props;
+
+// Category labels
+const categoryLabels: Record<string, string> = {
+  'digital-marketing': 'Digital Marketing',
+  'web-development': 'Web Development',
+  'app-development': 'App Development',
+  'design': 'Design',
+};
+---
+
+<section class="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
+  {/* Background */}
+  <div class="absolute inset-0 bg-gradient-to-br from-[color:var(--color-bg-secondary)] via-[color:var(--color-bg-primary)] to-[color:var(--color-accent-subtle)]"></div>
+
+  <div class="container relative z-10">
+    {/* Breadcrumb */}
+    <nav class="mb-6" aria-label="Breadcrumb">
+      <ol class="flex items-center gap-2 text-sm text-[color:var(--color-text-muted)]">
+        <li>
+          <a href="/" class="hover:text-[color:var(--color-accent)] transition-colors">Home</a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <a href="/work" class="hover:text-[color:var(--color-accent)] transition-colors">Work</a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <span class="text-[color:var(--color-text-secondary)]">{client}</span>
+        </li>
+      </ol>
+    </nav>
+
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      {/* Left: Content */}
+      <div>
+        {/* Tags */}
+        <div class="flex flex-wrap gap-2 mb-4">
+          <Badge variant="default">{categoryLabels[category] || category}</Badge>
+          {tags.slice(0, 2).map((tag) => (
+            <Badge variant="secondary" size="sm">{tag}</Badge>
+          ))}
+        </div>
+
+        {/* Client */}
+        <p class="text-[color:var(--color-accent)] font-medium mb-2" data-animate="fade-up">
+          {client}
+        </p>
+
+        {/* Title */}
+        <h1 
+          class="text-3xl md:text-4xl lg:text-5xl font-bold text-[color:var(--color-text-primary)] leading-tight mb-4"
+          data-animate="fade-up"
+          data-delay="0.1"
+        >
+          {title}
+        </h1>
+
+        {/* Excerpt */}
+        <p 
+          class="text-lg text-[color:var(--color-text-tertiary)] mb-6 leading-relaxed"
+          data-animate="fade-up"
+          data-delay="0.2"
+        >
+          {excerpt}
+        </p>
+
+        {/* Meta info */}
+        <div 
+          class="flex flex-wrap gap-6 text-sm text-[color:var(--color-text-muted)] mb-8"
+          data-animate="fade-up"
+          data-delay="0.3"
+        >
+          <div>
+            <span class="block text-[color:var(--color-text-primary)] font-medium">Timeline</span>
+            {timeline}
+          </div>
+          <div>
+            <span class="block text-[color:var(--color-text-primary)] font-medium">Year</span>
+            {year}
+          </div>
+        </div>
+
+        {/* Key metrics */}
+        <div 
+          class="grid grid-cols-2 gap-4"
+          data-animate="fade-up"
+          data-delay="0.4"
+        >
+          {metrics.slice(0, 4).map((metric) => (
+            <div class="p-4 bg-[color:var(--color-bg-primary)] rounded-xl border border-[color:var(--color-border)]">
+              <div class="text-2xl md:text-3xl font-bold text-[color:var(--color-accent)]">
+                {metric.value}
+              </div>
+              <div class="text-sm text-[color:var(--color-text-muted)]">
+                {metric.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Right: Hero Image */}
+      <div class="relative" data-animate="fade-left" data-delay="0.2">
+        <div class="aspect-[4/3] rounded-2xl overflow-hidden bg-[color:var(--color-bg-secondary)] border border-[color:var(--color-border)] shadow-[var(--shadow-xl)]">
+          {/* Placeholder - replace with actual image */}
+          <div class="w-full h-full bg-gradient-to-br from-[color:var(--color-bg-secondary)] to-[color:var(--color-bg-tertiary)] flex items-center justify-center">
+            <span class="text-[color:var(--color-text-muted)]">{client}</span>
+          </div>
+          {/* Uncomment when images are ready
+          <img
+            src={heroImage}
+            alt={`${title} hero image`}
+            class="w-full h-full object-cover"
+            loading="eager"
+          />
+          */}
+        </div>
+
+        {/* Decorative elements */}
+        <div class="absolute -z-10 -bottom-4 -right-4 w-full h-full rounded-2xl bg-[color:var(--color-accent)]/10"></div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,143 @@
+---
+// src/components/ui/ProgressBar.astro
+// Created: Progress bar with labels, animations, and multiple variants
+
+interface Props {
+  value: number;
+  max?: number;
+  label?: string;
+  showValue?: boolean;
+  valueFormat?: 'percent' | 'fraction' | 'custom';
+  customValueText?: string;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'success' | 'warning' | 'error' | 'gradient';
+  animated?: boolean;
+  striped?: boolean;
+  class?: string;
+}
+
+const {
+  value,
+  max = 100,
+  label,
+  showValue = false,
+  valueFormat = 'percent',
+  customValueText,
+  size = 'md',
+  variant = 'default',
+  animated = false,
+  striped = false,
+  class: className,
+} = Astro.props;
+
+// Calculate percentage
+const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+
+// Format value display
+const getValueText = (): string => {
+  if (customValueText) return customValueText;
+  switch (valueFormat) {
+    case 'percent':
+      return `${Math.round(percentage)}%`;
+    case 'fraction':
+      return `${value}/${max}`;
+    default:
+      return `${Math.round(percentage)}%`;
+  }
+};
+
+// Size styles
+const sizeStyles = {
+  sm: 'h-1.5',
+  md: 'h-2.5',
+  lg: 'h-4',
+};
+
+// Variant styles
+const variantStyles = {
+  default: 'bg-[color:var(--color-accent)]',
+  success: 'bg-green-500',
+  warning: 'bg-amber-500',
+  error: 'bg-red-500',
+  gradient: 'bg-gradient-to-r from-[color:var(--color-accent)] to-purple-500',
+};
+---
+
+<div class:list={['w-full', className]}>
+  {/* Header with label and value */}
+  {(label || showValue) && (
+    <div class="flex justify-between items-center mb-2">
+      {label && (
+        <span class="text-sm font-medium text-[color:var(--color-text-primary)]">
+          {label}
+        </span>
+      )}
+      {showValue && (
+        <span class="text-sm text-[color:var(--color-text-muted)]">
+          {getValueText()}
+        </span>
+      )}
+    </div>
+  )}
+
+  {/* Progress track */}
+  <div
+    class:list={[
+      'w-full bg-[color:var(--color-bg-tertiary)] rounded-full overflow-hidden',
+      sizeStyles[size],
+    ]}
+    role="progressbar"
+    aria-valuenow={value}
+    aria-valuemin={0}
+    aria-valuemax={max}
+    aria-label={label || 'Progress'}
+  >
+    {/* Progress bar */}
+    <div
+      class:list={[
+        'h-full rounded-full transition-all duration-500 ease-out',
+        variantStyles[variant],
+        striped && 'progress-striped',
+        animated && striped && 'progress-animated',
+      ]}
+      style={`width: ${percentage}%`}
+    />
+  </div>
+</div>
+
+<style>
+  /* Striped pattern */
+  .progress-striped {
+    background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.15) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.15) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 1rem 1rem;
+  }
+
+  /* Animated stripes */
+  .progress-animated {
+    animation: progress-stripes 1s linear infinite;
+  }
+
+  @keyframes progress-stripes {
+    0% {
+      background-position: 1rem 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .progress-animated {
+      animation: none;
+    }
+  }
+</style>

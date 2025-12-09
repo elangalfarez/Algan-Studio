@@ -1,0 +1,88 @@
+---
+// src/components/services/ServiceBenefits.astro
+// Created: Benefits/Why choose us section for service pages
+
+import SectionHeader from '../ui/SectionHeader.astro';
+import { Check, ArrowRight } from 'lucide-react';
+
+interface Props {
+  benefits: string[];
+  longDescription: string;
+}
+
+const { benefits, longDescription } = Astro.props;
+
+// Split long description into paragraphs
+const paragraphs = longDescription.split('\n\n').filter(Boolean);
+---
+
+<section class="section">
+  <div class="container">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+      {/* Left: Long description */}
+      <div data-animate="fade-right">
+        <span class="text-[color:var(--color-accent)] text-sm font-medium uppercase tracking-wider mb-4 block">
+          Why Choose Us
+        </span>
+        <h2 class="text-3xl md:text-4xl font-bold text-[color:var(--color-text-primary)] mb-6 leading-tight">
+          The Algan Studio Difference
+        </h2>
+        <div class="prose prose-lg text-[color:var(--color-text-tertiary)]">
+          {paragraphs.map((paragraph) => (
+            <p class="mb-4 leading-relaxed">{paragraph}</p>
+          ))}
+        </div>
+        
+        <a
+          href="/about"
+          class="inline-flex items-center gap-2 mt-6 text-[color:var(--color-accent)] font-medium hover:gap-3 transition-all"
+        >
+          <span>Learn more about us</span>
+          <ArrowRight className="w-5 h-5" />
+        </a>
+      </div>
+
+      {/* Right: Benefits list */}
+      <div data-animate="fade-left" data-delay="0.1">
+        <div class="bg-[color:var(--color-bg-secondary)] rounded-2xl p-6 md:p-8 border border-[color:var(--color-border)]">
+          <h3 class="text-xl font-bold text-[color:var(--color-text-primary)] mb-6">
+            What You Get
+          </h3>
+          <ul class="space-y-4">
+            {benefits.map((benefit, index) => (
+              <li 
+                class="flex items-start gap-3"
+                data-animate="fade-up"
+                data-delay={String(0.2 + index * 0.05)}
+              >
+                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-[color:var(--color-accent-subtle)] flex items-center justify-center mt-0.5">
+                  <Check className="w-4 h-4 text-[color:var(--color-accent)]" />
+                </div>
+                <span class="text-[color:var(--color-text-secondary)]">
+                  {benefit}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Trust badge */}
+        <div class="mt-6 flex items-center gap-4 p-4 bg-[color:var(--color-accent-subtle)] rounded-xl">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-[color:var(--color-accent)] flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <div>
+            <div class="font-semibold text-[color:var(--color-text-primary)]">
+              100% Satisfaction Guarantee
+            </div>
+            <div class="text-sm text-[color:var(--color-text-muted)]">
+              Not happy? We'll make it right or refund you.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

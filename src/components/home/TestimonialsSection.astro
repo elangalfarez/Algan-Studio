@@ -1,0 +1,48 @@
+---
+// src/components/home/TestimonialsSection.astro
+// Created: Homepage testimonials section wrapper with section header
+
+import SectionHeader from '../ui/SectionHeader.astro';
+import Testimonials from './Testimonials.tsx';
+import { TESTIMONIALS } from '../../lib/constants';
+---
+
+<section
+  class="section bg-[color:var(--color-bg-secondary)]"
+  aria-labelledby="testimonials-heading"
+>
+  <div class="container">
+    <SectionHeader
+      eyebrow="Client Love"
+      title="What Our Clients Say"
+      description="Don't take our word for it—hear from the brands we've helped grow."
+      titleAs="h2"
+    />
+
+    <div class="mt-12 md:mt-16 max-w-4xl mx-auto" data-animate="fade-up">
+      <Testimonials
+        client:visible
+        testimonials={TESTIMONIALS}
+        autoPlayInterval={6000}
+      />
+    </div>
+
+    {/* Client count badge */}
+    <div class="mt-10 text-center" data-animate="fade-up" data-delay="0.2">
+      <div class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[color:var(--color-bg-tertiary)] border border-[color:var(--color-border)]">
+        <div class="flex -space-x-2">
+          {['DS', 'LT', 'RH', 'JW', 'MS'].map((initials, i) => (
+            <div
+              class="w-8 h-8 rounded-full bg-[color:var(--color-accent-subtle)] border-2 border-[color:var(--color-bg-tertiary)] flex items-center justify-center text-xs font-medium text-[color:var(--color-accent)]"
+            >
+              {initials}
+            </div>
+          ))}
+        </div>
+        <span class="text-sm text-[color:var(--color-text-secondary)]">
+          <strong class="text-[color:var(--color-text-primary)]">500+</strong> happy clients
+        </span>
+      </div>
+    </div>
+  </div>
+</section>

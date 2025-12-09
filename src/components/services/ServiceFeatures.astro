@@ -1,0 +1,111 @@
+---
+// src/components/services/ServiceFeatures.astro
+// Created: Feature grid section for service pages
+
+import SectionHeader from '../ui/SectionHeader.astro';
+import {
+  Search, Monitor, PlayCircle, Zap, ShoppingBag, BarChart2,
+  Cpu, Package, Users, RefreshCw, Layers, Share,
+  Video, Star, Box, TrendingUp, Globe, PieChart,
+  Clipboard, Edit3, Activity, Link, Heart, Code,
+  FileText, Link2, MapPin, Calendar, Image, MessageCircle,
+  Headphones, BarChart, Smartphone, Server, Bell, UploadCloud,
+  LifeBuoy, Award, Instagram, Printer, Gauge, Edit
+} from 'lucide-react';
+
+interface Feature {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface Props {
+  features: Feature[];
+  title?: string;
+  description?: string;
+}
+
+const { features, title = 'What\'s Included', description } = Astro.props;
+
+// Icon mapping
+const iconMap: Record<string, any> = {
+  'search': Search,
+  'monitor': Monitor,
+  'play-circle': PlayCircle,
+  'zap': Zap,
+  'shopping-bag': ShoppingBag,
+  'bar-chart-2': BarChart2,
+  'cpu': Cpu,
+  'package': Package,
+  'users': Users,
+  'refresh-cw': RefreshCw,
+  'layers': Layers,
+  'share': Share,
+  'video': Video,
+  'star': Star,
+  'box': Box,
+  'trending-up': TrendingUp,
+  'globe': Globe,
+  'pie-chart': PieChart,
+  'clipboard': Clipboard,
+  'edit-3': Edit3,
+  'activity': Activity,
+  'link': Link,
+  'heart': Heart,
+  'code': Code,
+  'file-text': FileText,
+  'link-2': Link2,
+  'map-pin': MapPin,
+  'calendar': Calendar,
+  'image': Image,
+  'message-circle': MessageCircle,
+  'headphones': Headphones,
+  'bar-chart': BarChart,
+  'smartphone': Smartphone,
+  'server': Server,
+  'bell': Bell,
+  'upload-cloud': UploadCloud,
+  'life-buoy': LifeBuoy,
+  'award': Award,
+  'instagram': Instagram,
+  'printer': Printer,
+  'gauge': Gauge,
+  'edit': Edit,
+  'shopping-cart': ShoppingBag,
+};
+---
+
+<section class="section bg-[color:var(--color-bg-secondary)]">
+  <div class="container">
+    <SectionHeader
+      eyebrow="Features"
+      title={title}
+      description={description}
+      titleAs="h2"
+    />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12" data-stagger="0.1">
+      {features.map((feature) => {
+        const IconComponent = iconMap[feature.icon] || Zap;
+        return (
+          <div
+            class="group p-6 bg-[color:var(--color-bg-primary)] rounded-xl border border-[color:var(--color-border)] hover:border-[color:var(--color-accent)]/30 hover:shadow-[var(--shadow-lg)] transition-all duration-300"
+            data-stagger-item
+          >
+            <div class="w-12 h-12 rounded-lg bg-[color:var(--color-accent-subtle)] flex items-center justify-center mb-4 group-hover:bg-[color:var(--color-accent)] transition-colors">
+              <IconComponent 
+                className="w-6 h-6 text-[color:var(--color-accent)] group-hover:text-white transition-colors" 
+              />
+            </div>
+            <h3 class="text-lg font-semibold text-[color:var(--color-text-primary)] mb-2">
+              {feature.title}
+            </h3>
+            <p class="text-[color:var(--color-text-tertiary)] leading-relaxed">
+              {feature.description}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

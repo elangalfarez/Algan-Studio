@@ -1,0 +1,190 @@
+---
+// src/components/home/FeaturedWork.astro
+// Created: Homepage featured work/portfolio section with case study cards
+
+import SectionHeader from '../ui/SectionHeader.astro';
+import Button from '../ui/Button.astro';
+import Badge from '../ui/Badge.astro';
+
+// Featured case studies data
+const featuredWork = [
+  {
+    title: 'LuxeStyle Fashion',
+    category: 'Digital Marketing',
+    description: 'Increased ROAS from 2x to 7x through strategic Google Ads restructuring and creative optimization.',
+    metrics: [
+      { label: 'ROAS Increase', value: '340%' },
+      { label: 'Revenue Growth', value: 'Rp 2.4B' },
+    ],
+    image: '/images/work/luxestyle.jpg',
+    href: '/work/luxestyle-fashion',
+    color: 'rose',
+  },
+  {
+    title: 'TechFlow Solutions',
+    category: 'Web Development',
+    description: 'Built a lightning-fast marketing site that loads in under 2 seconds and converts visitors at 3x the industry average.',
+    metrics: [
+      { label: 'Load Time', value: '1.2s' },
+      { label: 'Conversion Rate', value: '+156%' },
+    ],
+    image: '/images/work/techflow.jpg',
+    href: '/work/techflow-solutions',
+    color: 'blue',
+  },
+  {
+    title: 'GreenMart Indonesia',
+    category: 'App Development',
+    description: 'Rebuilt their Flutter app from scratch, resulting in 89% more downloads and 4.8★ app store rating.',
+    metrics: [
+      { label: 'Downloads', value: '+89%' },
+      { label: 'App Rating', value: '4.8★' },
+    ],
+    image: '/images/work/greenmart.jpg',
+    href: '/work/greenmart-indonesia',
+    color: 'emerald',
+  },
+];
+
+// Color variants for accent
+const colorVariants: Record<string, string> = {
+  rose: 'from-rose-500/20 to-rose-500/5',
+  blue: 'from-blue-500/20 to-blue-500/5',
+  emerald: 'from-emerald-500/20 to-emerald-500/5',
+};
+---
+
+<section
+  class="section"
+  aria-labelledby="work-heading"
+>
+  <div class="container">
+    <SectionHeader
+      eyebrow="Our Work"
+      title="Results That Speak Louder"
+      description="We don't just deliver projects—we deliver transformations. Here's proof."
+      titleAs="h2"
+    >
+      <Button variant="text" href="/work">
+        View all case studies →
+      </Button>
+    </SectionHeader>
+
+    {/* Featured Work Grid */}
+    <div class="mt-12 md:mt-16 space-y-8">
+      {featuredWork.map((project, index) => (
+        <a
+          href={project.href}
+          class="featured-work-card group block"
+          data-animate={index % 2 === 0 ? 'fade-right' : 'fade-left'}
+        >
+          <div class:list={[
+            'relative rounded-2xl overflow-hidden',
+            'bg-gradient-to-br',
+            colorVariants[project.color],
+            'border border-[color:var(--color-border)]',
+            'transition-all duration-[var(--duration-normal)]',
+            'hover:shadow-[var(--shadow-xl)] hover:border-[color:var(--color-accent)]/30',
+          ]}>
+            <div class:list={[
+              'grid gap-6 p-6 md:p-8 lg:p-10',
+              index % 2 === 0 ? 'lg:grid-cols-[1fr,1.2fr]' : 'lg:grid-cols-[1.2fr,1fr]',
+            ]}>
+              {/* Content */}
+              <div class:list={[
+                'flex flex-col justify-center',
+                index % 2 !== 0 && 'lg:order-2',
+              ]}>
+                <Badge variant="default" class="w-fit mb-4">
+                  {project.category}
+                </Badge>
+                
+                <h3 class="text-2xl md:text-3xl font-bold text-[color:var(--color-text-primary)] mb-3 group-hover:text-[color:var(--color-accent)] transition-colors">
+                  {project.title}
+                </h3>
+                
+                <p class="text-[color:var(--color-text-tertiary)] leading-relaxed mb-6">
+                  {project.description}
+                </p>
+
+                {/* Metrics */}
+                <div class="flex flex-wrap gap-6 mb-6">
+                  {project.metrics.map((metric) => (
+                    <div>
+                      <div class="text-2xl md:text-3xl font-bold text-[color:var(--color-accent)]">
+                        {metric.value}
+                      </div>
+                      <div class="text-sm text-[color:var(--color-text-muted)]">
+                        {metric.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Read more link */}
+                <div class="flex items-center gap-2 text-[color:var(--color-accent)] font-medium">
+                  <span>Read case study</span>
+                  <svg
+                    class="w-5 h-5 transform group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Image */}
+              <div class:list={[
+                'relative aspect-[4/3] lg:aspect-auto rounded-xl overflow-hidden',
+                index % 2 !== 0 && 'lg:order-1',
+              ]}>
+                <div class="absolute inset-0 bg-[color:var(--color-bg-tertiary)]">
+                  {/* Placeholder gradient until image loads */}
+                  <div class="w-full h-full bg-gradient-to-br from-[color:var(--color-bg-secondary)] to-[color:var(--color-bg-tertiary)] flex items-center justify-center">
+                    <span class="text-[color:var(--color-text-muted)] text-sm">
+                      {project.title}
+                    </span>
+                  </div>
+                </div>
+                {/* Uncomment when images are ready
+                <img
+                  src={project.image}
+                  alt={`${project.title} case study preview`}
+                  class="w-full h-full object-cover transition-transform duration-[var(--duration-slow)] group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
+                />
+                */}
+              </div>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    {/* View All CTA */}
+    <div class="mt-12 text-center" data-animate="fade-up">
+      <Button variant="primary" size="lg" href="/work">
+        Explore All Projects
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .featured-work-card {
+    perspective: 1000px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .featured-work-card img {
+      transition: none;
+    }
+    
+    .featured-work-card:hover img {
+      transform: none;
+    }
+  }
+</style>

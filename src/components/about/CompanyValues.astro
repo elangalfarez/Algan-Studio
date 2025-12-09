@@ -1,0 +1,66 @@
+---
+// src/components/about/CompanyValues.astro
+// Created: Company values section with icons
+
+import { COMPANY_VALUES } from '../../lib/team-data';
+
+// Icon components
+const icons: Record<string, string> = {
+  target: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />`,
+  users: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />`,
+  lightbulb: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />`,
+  shield: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />`,
+  rocket: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />`,
+  heart: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />`,
+};
+---
+
+<section class="section bg-[color:var(--color-bg-secondary)]">
+  <div class="container">
+    <div class="text-center mb-12">
+      <span class="text-[color:var(--color-accent)] text-sm font-semibold uppercase tracking-wider mb-2 block">
+        Values
+      </span>
+      <h2 class="text-3xl md:text-4xl font-bold text-[color:var(--color-text-primary)] mb-4">
+        Nilai-Nilai Kami
+      </h2>
+      <p class="text-lg text-[color:var(--color-text-tertiary)] max-w-2xl mx-auto">
+        Prinsip-prinsip yang membimbing setiap keputusan dan tindakan kami.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {COMPANY_VALUES.map((value, index) => (
+        <div 
+          class="value-card p-6 bg-[color:var(--color-bg-primary)] rounded-xl border border-[color:var(--color-border)] hover:border-[color:var(--color-accent)]/30 hover:shadow-[var(--shadow-lg)] transition-all duration-300"
+          data-animate="fade-up"
+          data-delay={String(index * 0.1)}
+        >
+          <div class="w-12 h-12 rounded-xl bg-[color:var(--color-accent-subtle)] flex items-center justify-center mb-4">
+            <svg 
+              class="w-6 h-6 text-[color:var(--color-accent)]" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+              set:html={icons[value.icon]}
+            />
+          </div>
+          <h3 class="text-lg font-semibold text-[color:var(--color-text-primary)] mb-2">
+            {value.title}
+          </h3>
+          <p class="text-[color:var(--color-text-tertiary)] text-sm leading-relaxed">
+            {value.description}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (prefers-reduced-motion: reduce) {
+    .value-card {
+      transition: none;
+    }
+  }
+</style>

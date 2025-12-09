@@ -1,0 +1,196 @@
+---
+// src/pages/legal/privacy-policy.astro
+// Created: Privacy policy page
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description="Kebijakan privasi Algan Studio - bagaimana kami mengumpulkan, menggunakan, dan melindungi data Anda."
+>
+  <section class="relative pt-32 pb-8 md:pt-40 md:pb-12">
+    <div class="container">
+      <div class="max-w-3xl mx-auto">
+        <nav class="mb-6" aria-label="Breadcrumb">
+          <ol class="flex items-center gap-2 text-sm text-[color:var(--color-text-muted)]">
+            <li>
+              <a href="/" class="hover:text-[color:var(--color-accent)] transition-colors">Home</a>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <span class="text-[color:var(--color-text-secondary)]">Privacy Policy</span>
+            </li>
+          </ol>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-[color:var(--color-text-primary)] mb-4">
+          Privacy Policy
+        </h1>
+        <p class="text-[color:var(--color-text-muted)]">
+          Terakhir diperbarui: 1 Januari 2024
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16 md:pb-24">
+    <div class="container">
+      <article class="max-w-3xl mx-auto prose-custom">
+        <div class="p-6 bg-[color:var(--color-bg-secondary)] rounded-xl border border-[color:var(--color-border)] mb-8">
+          <p class="text-sm text-[color:var(--color-text-tertiary)]">
+            Kebijakan Privasi ini menjelaskan bagaimana Algan Studio ("kami", "kita") 
+            mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda ketika 
+            Anda menggunakan layanan kami.
+          </p>
+        </div>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            1. Informasi yang Kami Kumpulkan
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>Kami mengumpulkan informasi berikut:</p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li><strong>Informasi Kontak:</strong> Nama, email, nomor telepon, dan nama perusahaan yang Anda berikan melalui form kontak atau registrasi.</li>
+              <li><strong>Informasi Bisnis:</strong> Detail tentang bisnis Anda yang diperlukan untuk memberikan layanan, termasuk website, industri, dan kebutuhan marketing.</li>
+              <li><strong>Data Penggunaan:</strong> Informasi tentang bagaimana Anda menggunakan website kami, termasuk halaman yang dikunjungi, waktu kunjungan, dan referral source.</li>
+              <li><strong>Cookies:</strong> Data yang dikumpulkan melalui cookies dan teknologi tracking serupa.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            2. Bagaimana Kami Menggunakan Informasi
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>Informasi yang kami kumpulkan digunakan untuk:</p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>Menyediakan dan meningkatkan layanan kami</li>
+              <li>Berkomunikasi dengan Anda tentang project, layanan, dan update</li>
+              <li>Memproses pembayaran dan mengelola akun</li>
+              <li>Mengirimkan newsletter dan materi marketing (dengan persetujuan Anda)</li>
+              <li>Menganalisis penggunaan website untuk peningkatan</li>
+              <li>Mematuhi kewajiban hukum</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            3. Berbagi Informasi
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>Kami tidak menjual informasi pribadi Anda. Kami mungkin berbagi informasi dengan:</p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li><strong>Service Providers:</strong> Pihak ketiga yang membantu kami menyediakan layanan (seperti hosting, payment processing, email services)</li>
+              <li><strong>Business Partners:</strong> Dengan persetujuan Anda, untuk layanan yang terintegrasi</li>
+              <li><strong>Legal Requirements:</strong> Jika diperlukan oleh hukum atau untuk melindungi hak kami</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            4. Keamanan Data
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>
+              Kami menerapkan langkah-langkah keamanan yang wajar untuk melindungi informasi 
+              Anda dari akses tidak sah, perubahan, pengungkapan, atau penghancuran. Ini termasuk:
+            </p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>Enkripsi SSL untuk transfer data</li>
+              <li>Akses terbatas ke data pribadi</li>
+              <li>Regular security audits</li>
+              <li>Secure data storage</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            5. Cookies dan Tracking
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>Website kami menggunakan cookies untuk:</p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li><strong>Essential Cookies:</strong> Diperlukan untuk fungsi dasar website</li>
+              <li><strong>Analytics Cookies:</strong> Membantu kami memahami penggunaan website</li>
+              <li><strong>Marketing Cookies:</strong> Digunakan untuk personalisasi iklan (dengan persetujuan)</li>
+            </ul>
+            <p>
+              Anda dapat mengontrol cookies melalui pengaturan browser Anda.
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            6. Hak Anda
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>Anda memiliki hak untuk:</p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>Mengakses informasi pribadi yang kami simpan tentang Anda</li>
+              <li>Meminta koreksi data yang tidak akurat</li>
+              <li>Meminta penghapusan data Anda</li>
+              <li>Opt-out dari marketing communications</li>
+              <li>Menarik persetujuan yang sebelumnya diberikan</li>
+            </ul>
+            <p>
+              Untuk menggunakan hak-hak ini, hubungi kami di privacy@algan.id
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            7. Retensi Data
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>
+              Kami menyimpan informasi pribadi Anda selama diperlukan untuk tujuan yang 
+              dijelaskan dalam kebijakan ini, kecuali periode retensi yang lebih lama 
+              diperlukan atau diizinkan oleh hukum.
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            8. Perubahan Kebijakan
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>
+              Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. 
+              Perubahan akan diposting di halaman ini dengan tanggal "terakhir diperbarui" yang baru.
+              Kami mendorong Anda untuk meninjau kebijakan ini secara berkala.
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            9. Hubungi Kami
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, hubungi kami:</p>
+            <ul class="list-none space-y-2">
+              <li><strong>Email:</strong> privacy@algan.id</li>
+              <li><strong>Alamat:</strong> Jl. Sudirman No. 123, Jakarta Pusat 10220</li>
+              <li><strong>Telepon:</strong> +62 21 1234 5678</li>
+            </ul>
+          </div>
+        </section>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose-custom strong {
+    color: var(--color-text-primary);
+  }
+</style>

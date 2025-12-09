@@ -1,0 +1,225 @@
+---
+// src/components/ui/Button.astro
+// Created: Multi-variant button with magnetic hover, loading states, and icons
+
+interface Props {
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'text';
+  size?: 'sm' | 'md' | 'lg';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  loading?: boolean;
+  fullWidth?: boolean;
+  iconLeft?: boolean;
+  iconRight?: boolean;
+  magnetic?: boolean;
+  class?: string;
+  'aria-label'?: string;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  type = 'button',
+  disabled = false,
+  loading = false,
+  fullWidth = false,
+  iconLeft = false,
+  iconRight = false,
+  magnetic = false,
+  class: className,
+  'aria-label': ariaLabel,
+} = Astro.props;
+
+const isLink = !!href;
+const Tag = isLink ? 'a' : 'button';
+
+// Base styles
+const baseStyles = [
+  'inline-flex items-center justify-center gap-2',
+  'font-medium leading-none',
+  'rounded-xl',
+  'transition-all duration-[var(--duration-fast)]',
+  'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[color:var(--color-accent)]',
+  'disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none',
+  magnetic && 'magnetic-button',
+  fullWidth && 'w-full',
+];
+
+// Variant styles
+const variantStyles = {
+  primary: [
+    'bg-[color:var(--color-brand-primary)] text-[color:var(--color-text-inverse)]',
+    'hover:bg-[color:var(--color-accent)] hover:shadow-[var(--shadow-accent)]',
+    'active:scale-[0.98]',
+  ],
+  secondary: [
+    'bg-[color:var(--color-bg-secondary)] text-[color:var(--color-text-primary)]',
+    'hover:bg-[color:var(--color-accent-subtle)]',
+    'active:scale-[0.98]',
+  ],
+  outline: [
+    'bg-transparent border-2 border-[color:var(--color-brand-primary)] text-[color:var(--color-text-primary)]',
+    'hover:bg-[color:var(--color-brand-primary)] hover:text-[color:var(--color-text-inverse)]',
+    'active:scale-[0.98]',
+  ],
+  ghost: [
+    'bg-transparent text-[color:var(--color-text-primary)]',
+    'hover:bg-[color:var(--color-accent-subtle)]',
+    'active:scale-[0.98]',
+  ],
+  text: [
+    'bg-transparent text-[color:var(--color-accent)] underline-offset-4',
+    'hover:underline hover:text-[color:var(--color-accent-hover)]',
+    'p-0 h-auto',
+  ],
+};
+
+// Size styles
+const sizeStyles = {
+  sm: ['text-sm', 'h-[var(--btn-height-sm)]', 'px-4'],
+  md: ['text-sm', 'h-[var(--btn-height-md)]', 'px-6'],
+  lg: ['text-base', 'h-[var(--btn-height-lg)]', 'px-8'],
+};
+
+// Text variant overrides (no height/padding)
+const textSizeOverride = variant === 'text' ? ['h-auto', 'px-0'] : [];
+
+const allStyles = [
+  ...baseStyles,
+  ...variantStyles[variant],
+  ...(variant !== 'text' ? sizeStyles[size] : ['text-sm']),
+  ...textSizeOverride,
+  className,
+].filter(Boolean);
+---
+
+{isLink ? (
+  <a
+    href={href}
+    class:list={allStyles}
+    aria-label={ariaLabel}
+    data-magnetic={magnetic ? '' : undefined}
+  >
+    {loading && (
+      <svg class="animate-spin -ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+    )}
+    {iconLeft && <slot name="icon-left" />}
+    <span class={loading ? 'opacity-0' : ''}><slot /></span>
+    {iconRight && <slot name="icon-right" />}
+  </a>
+) : (
+  <button
+    type={type}
+    disabled={disabled || loading}
+    class:list={allStyles}
+    aria-label={ariaLabel}
+    aria-busy={loading}
+    data-magnetic={magnetic ? '' : undefined}
+  >
+    {loading && (
+      <svg class="animate-spin h-4 w-4 absolute" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+    )}
+    {iconLeft && <slot name="icon-left" />}
+    <span class:list={[loading && 'opacity-0']}><slot /></span>
+    {iconRight && <slot name="icon-right" />}
+  </button>
+)}
+
+<style>
+  /* Magnetic button effect - requires JS initialization */
+  .magnetic-button {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .magnetic-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%
+    );
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+  
+  .magnetic-button:hover::before {
+    opacity: 1;
+  }
+  
+  /* Button shine effect on hover */
+  .magnetic-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left var(--duration-moderate) var(--ease-out);
+  }
+  
+  .magnetic-button:hover::after {
+    left: 100%;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .magnetic-button::before,
+    .magnetic-button::after {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Magnetic button effect
+  function initMagneticButtons() {
+    const buttons = document.querySelectorAll('[data-magnetic]');
+    
+    buttons.forEach((button) => {
+      const btn = button as HTMLElement;
+      
+      btn.addEventListener('mousemove', (e: MouseEvent) => {
+        const rect = btn.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        
+        btn.style.setProperty('--mouse-x', `${x}%`);
+        btn.style.setProperty('--mouse-y', `${y}%`);
+        
+        // Subtle magnetic pull towards cursor
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const deltaX = (e.clientX - rect.left - centerX) / 10;
+        const deltaY = (e.clientY - rect.top - centerY) / 10;
+        
+        btn.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+      });
+      
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+      });
+    });
+  }
+  
+  // Initialize on page load
+  initMagneticButtons();
+  
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:page-load', initMagneticButtons);
+</script>

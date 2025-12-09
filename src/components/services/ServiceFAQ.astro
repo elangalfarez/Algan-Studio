@@ -1,0 +1,79 @@
+---
+// src/components/services/ServiceFAQ.astro
+// Created: FAQ section for service pages using Accordion component
+
+import SectionHeader from '../ui/SectionHeader.astro';
+import { Accordion } from '../ui';
+
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  faqs: FAQ[];
+  serviceTitle: string;
+}
+
+const { faqs, serviceTitle } = Astro.props;
+
+// Transform FAQs to accordion format
+const accordionItems = faqs.map((faq, index) => ({
+  id: `faq-${index}`,
+  title: faq.question,
+  content: faq.answer,
+}));
+---
+
+<section class="section bg-[color:var(--color-bg-secondary)]">
+  <div class="container">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
+      {/* Left: Header */}
+      <div>
+        <SectionHeader
+          eyebrow="FAQ"
+          title={`${serviceTitle} Questions`}
+          description="Get answers to common questions about our service. Can't find what you're looking for?"
+          align="left"
+          titleAs="h2"
+        />
+
+        <div class="mt-8" data-animate="fade-up" data-delay="0.2">
+          <a
+            href="/contact"
+            class="inline-flex items-center gap-2 text-[color:var(--color-accent)] font-medium hover:gap-3 transition-all"
+          >
+            <span>Ask us directly</span>
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      {/* Right: Accordion */}
+      <div data-animate="fade-up" data-delay="0.1">
+        <Accordion
+          client:visible
+          items={accordionItems}
+          variant="separated"
+          allowMultiple={false}
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* FAQ Schema markup */}
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+})} />

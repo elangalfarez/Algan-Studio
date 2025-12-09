@@ -1,0 +1,174 @@
+---
+// src/components/ui/Checkbox.astro
+// Created: Custom styled checkbox with label and description support
+
+interface Props {
+  name: string;
+  id?: string;
+  label?: string;
+  description?: string;
+  value?: string;
+  checked?: boolean;
+  required?: boolean;
+  disabled?: boolean;
+  error?: string;
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const {
+  name,
+  id = name,
+  label,
+  description,
+  value,
+  checked = false,
+  required = false,
+  disabled = false,
+  error,
+  size = 'md',
+  class: className,
+} = Astro.props;
+
+// Size styles
+const sizeStyles = {
+  sm: {
+    checkbox: 'w-4 h-4',
+    label: 'text-sm',
+    description: 'text-xs',
+  },
+  md: {
+    checkbox: 'w-5 h-5',
+    label: 'text-base',
+    description: 'text-sm',
+  },
+  lg: {
+    checkbox: 'w-6 h-6',
+    label: 'text-lg',
+    description: 'text-base',
+  },
+};
+
+const sizes = sizeStyles[size];
+const hasError = !!error;
+---
+
+<div class:list={['relative flex items-start gap-3', className]}>
+  <div class="flex items-center h-6">
+    <input
+      type="checkbox"
+      name={name}
+      id={id}
+      value={value}
+      checked={checked}
+      required={required}
+      disabled={disabled}
+      aria-invalid={hasError}
+      aria-describedby={error ? `${id}-error` : description ? `${id}-description` : undefined}
+      class:list={[
+        'checkbox-custom',
+        sizes.checkbox,
+        'rounded',
+        'border-2',
+        'transition-all duration-[var(--duration-fast)]',
+        'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[color:var(--color-accent)]',
+        'cursor-pointer',
+        hasError
+          ? 'border-red-500'
+          : 'border-[color:var(--color-border-strong)]',
+        disabled && 'opacity-50 cursor-not-allowed',
+      ]}
+    />
+  </div>
+
+  {(label || description) && (
+    <div class="flex-1 min-w-0">
+      {label && (
+        <label
+          for={id}
+          class:list={[
+            'font-medium text-[color:var(--color-text-primary)] cursor-pointer',
+            sizes.label,
+            disabled && 'opacity-50 cursor-not-allowed',
+          ]}
+        >
+          {label}
+          {required && <span class="text-red-500 ml-1" aria-hidden="true">*</span>}
+        </label>
+      )}
+      
+      {description && (
+        <p
+          id={`${id}-description`}
+          class:list={[
+            'text-[color:var(--color-text-muted)] mt-0.5',
+            sizes.description,
+          ]}
+        >
+          {description}
+        </p>
+      )}
+
+      {error && (
+        <p
+          id={`${id}-error`}
+          class="mt-1 text-sm text-red-500"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
+    </div>
+  )}
+</div>
+
+<style>
+  .checkbox-custom {
+    appearance: none;
+    background-color: var(--color-bg-tertiary);
+    position: relative;
+  }
+
+  .checkbox-custom:checked {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .checkbox-custom:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%) rotate(45deg);
+    width: 35%;
+    height: 60%;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+  }
+
+  .checkbox-custom:hover:not(:disabled):not(:checked) {
+    border-color: var(--color-accent);
+  }
+
+  .checkbox-custom:indeterminate {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .checkbox-custom:indeterminate::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 2px;
+    background-color: white;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .checkbox-custom {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+// src/components/services/RelatedServices.astro
+// Created: Related services section for service pages
+
+import SectionHeader from '../ui/SectionHeader.astro';
+import ServiceCard from '../ui/ServiceCard.astro';
+import { SERVICES_DATA } from '../../lib/services-data';
+import {
+  TrendingUp, Share2, ShoppingCart, Users, Search,
+  MessageCircle, Code, Smartphone, Palette
+} from 'lucide-react';
+
+interface Props {
+  currentServiceId: string;
+  relatedIds: string[];
+}
+
+const { currentServiceId, relatedIds } = Astro.props;
+
+// Icon mapping
+const iconMap: Record<string, any> = {
+  'trending-up': TrendingUp,
+  'share-2': Share2,
+  'shopping-cart': ShoppingCart,
+  'users': Users,
+  'search': Search,
+  'share': MessageCircle,
+  'code': Code,
+  'smartphone': Smartphone,
+  'palette': Palette,
+};
+
+// Get related services data
+const relatedServices = relatedIds
+  .filter((id) => id !== currentServiceId)
+  .slice(0, 3)
+  .map((id) => SERVICES_DATA[id])
+  .filter(Boolean);
+---
+
+{relatedServices.length > 0 && (
+  <section class="section bg-[color:var(--color-bg-secondary)]">
+    <div class="container">
+      <SectionHeader
+        eyebrow="More Services"
+        title="You Might Also Need"
+        description="Explore other services that complement your marketing strategy."
+        titleAs="h2"
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+        {relatedServices.map((service, index) => {
+          const IconComponent = iconMap[service.icon] || TrendingUp;
+          return (
+            <div data-animate="fade-up" data-delay={String(index * 0.1)}>
+              <ServiceCard
+                title={service.title}
+                description={service.description}
+                href={`/services/${service.id}`}
+                features={service.features.slice(0, 2).map(f => f.title)}
+              >
+                <Fragment slot="icon">
+                  <IconComponent size={24} />
+                </Fragment>
+              </ServiceCard>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+)}

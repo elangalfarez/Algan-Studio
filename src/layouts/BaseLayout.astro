@@ -1,0 +1,227 @@
+---
+// src/layouts/BaseLayout.astro
+// Created: Global layout wrapper with SEO, fonts, scripts, and analytics
+
+import { ViewTransitions } from 'astro:transitions';
+import Header from '../components/global/Header.astro';
+import Footer from '../components/global/Footer.astro';
+import SEO from '../components/global/SEO.astro';
+import WhatsAppButton from '../components/global/WhatsAppButton.astro';
+import { SITE_CONFIG } from '../lib/constants';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalUrl?: string;
+  noIndex?: boolean;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+  section?: string;
+  tags?: string[];
+}
+
+const {
+  title,
+  description = SITE_CONFIG.description,
+  image = '/images/og-image.jpg',
+  canonicalUrl,
+  noIndex = false,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  author,
+  section,
+  tags,
+} = Astro.props;
+
+const pageTitle = title
+  ? `${title} | ${SITE_CONFIG.name}`
+  : `${SITE_CONFIG.name} - ${SITE_CONFIG.tagline}`;
+
+const currentUrl = canonicalUrl || Astro.url.href;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Preconnect to critical origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Preload critical fonts -->
+    <link
+      rel="preload"
+      href="/fonts/inter-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#FAF8F5" />
+
+    <!-- SEO Component -->
+    <SEO
+      title={pageTitle}
+      description={description}
+      image={image}
+      canonicalUrl={currentUrl}
+      noIndex={noIndex}
+      type={type}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      author={author}
+      section={section}
+      tags={tags}
+    />
+
+    <!-- View Transitions for smooth page navigation -->
+    <ViewTransitions />
+
+    <!-- Font face declarations -->
+    <style is:global>
+      @font-face {
+        font-family: 'Inter Variable';
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url('/fonts/inter-var.woff2') format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+          U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC,
+          U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+    </style>
+  </head>
+
+  <body
+    class="min-h-screen bg-bg-primary text-text-secondary font-sans antialiased"
+  >
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link"> Skip to main content </a>
+
+    <!-- Header -->
+    <Header />
+
+    <!-- Main content -->
+    <main id="main-content" class="relative">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <Footer />
+
+    <!-- WhatsApp Floating Button -->
+    <WhatsAppButton />
+
+    <!-- GSAP Core -->
+    <script>
+      import { gsap } from 'gsap';
+      import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+      // Register GSAP plugins
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Make GSAP available globally
+      window.gsap = gsap;
+      window.ScrollTrigger = ScrollTrigger;
+
+      // Initialize scroll-triggered animations
+      document.addEventListener('astro:page-load', () => {
+        // Animate elements with data-animate attribute
+        const animatedElements = document.querySelectorAll('[data-animate]');
+
+        animatedElements.forEach((el) => {
+          const animationType = el.getAttribute('data-animate');
+          const delay = parseFloat(el.getAttribute('data-delay') || '0');
+
+          let fromVars: gsap.TweenVars = { opacity: 0 };
+
+          switch (animationType) {
+            case 'fade-up':
+              fromVars = { opacity: 0, y: 30 };
+              break;
+            case 'fade-down':
+              fromVars = { opacity: 0, y: -30 };
+              break;
+            case 'fade-left':
+              fromVars = { opacity: 0, x: 30 };
+              break;
+            case 'fade-right':
+              fromVars = { opacity: 0, x: -30 };
+              break;
+            case 'scale':
+              fromVars = { opacity: 0, scale: 0.9 };
+              break;
+            default:
+              fromVars = { opacity: 0 };
+          }
+
+          gsap.fromTo(
+            el,
+            fromVars,
+            {
+              opacity: 1,
+              y: 0,
+              x: 0,
+              scale: 1,
+              duration: 0.6,
+              delay,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: el,
+                start: 'top 85%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        });
+
+        // Stagger animations for groups
+        const staggerGroups = document.querySelectorAll('[data-stagger]');
+        staggerGroups.forEach((group) => {
+          const children = group.querySelectorAll('[data-stagger-item]');
+          const staggerDelay = parseFloat(
+            group.getAttribute('data-stagger') || '0.1'
+          );
+
+          gsap.fromTo(
+            children,
+            { opacity: 0, y: 20 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              stagger: staggerDelay,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: group,
+                start: 'top 85%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        });
+      });
+
+      // Respect reduced motion
+      const prefersReducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      );
+      if (prefersReducedMotion.matches) {
+        gsap.globalTimeline.timeScale(0);
+        ScrollTrigger.defaults({ markers: false });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+---
+// src/components/ui/Skeleton.astro
+// Created: Loading skeleton placeholders with shimmer animation
+
+interface Props {
+  variant?: 'text' | 'circular' | 'rectangular' | 'rounded';
+  width?: string;
+  height?: string;
+  lines?: number;
+  class?: string;
+  animate?: boolean;
+}
+
+const {
+  variant = 'text',
+  width,
+  height,
+  lines = 1,
+  class: className,
+  animate = true,
+} = Astro.props;
+
+// Variant styles
+const variantStyles = {
+  text: 'rounded h-4',
+  circular: 'rounded-full',
+  rectangular: 'rounded-none',
+  rounded: 'rounded-xl',
+};
+
+// Default dimensions
+const defaultDimensions = {
+  text: { width: '100%', height: '1rem' },
+  circular: { width: '3rem', height: '3rem' },
+  rectangular: { width: '100%', height: '8rem' },
+  rounded: { width: '100%', height: '8rem' },
+};
+
+const finalWidth = width || defaultDimensions[variant].width;
+const finalHeight = height || defaultDimensions[variant].height;
+---
+
+{variant === 'text' && lines > 1 ? (
+  <div class:list={['space-y-2', className]}>
+    {Array.from({ length: lines }).map((_, index) => (
+      <div
+        class:list={[
+          'bg-[color:var(--color-bg-tertiary)]',
+          variantStyles[variant],
+          animate && 'animate-pulse',
+          index === lines - 1 && 'w-4/5', // Last line shorter
+        ]}
+        style={`width: ${index === lines - 1 ? '80%' : finalWidth}; height: ${finalHeight};`}
+        aria-hidden="true"
+      />
+    ))}
+  </div>
+) : (
+  <div
+    class:list={[
+      'bg-[color:var(--color-bg-tertiary)]',
+      variantStyles[variant],
+      animate && 'animate-pulse',
+      className,
+    ]}
+    style={`width: ${finalWidth}; height: ${finalHeight};`}
+    aria-hidden="true"
+  />
+)}
+
+<style>
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--color-bg-tertiary) 25%,
+      var(--color-bg-secondary) 50%,
+      var(--color-bg-tertiary) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+  }
+</style>

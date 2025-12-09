@@ -1,0 +1,64 @@
+---
+// src/components/work/CaseStudyTestimonial.astro
+// Created: Testimonial section for case study pages
+
+import Avatar from '../ui/Avatar.astro';
+
+interface Testimonial {
+  quote: string;
+  author: string;
+  role: string;
+  image?: string;
+}
+
+interface Props {
+  testimonial: Testimonial;
+}
+
+const { testimonial } = Astro.props;
+---
+
+{testimonial && (
+  <section class="section">
+    <div class="container">
+      <div class="max-w-4xl mx-auto">
+        <div 
+          class="relative p-8 md:p-12 bg-[color:var(--color-bg-secondary)] rounded-2xl border border-[color:var(--color-border)]"
+          data-animate="fade-up"
+        >
+          {/* Quote icon */}
+          <div class="absolute -top-6 left-8 w-12 h-12 rounded-full bg-[color:var(--color-accent)] flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+            </svg>
+          </div>
+
+          {/* Quote */}
+          <blockquote class="text-xl md:text-2xl text-[color:var(--color-text-secondary)] leading-relaxed mb-8 pt-4">
+            "{testimonial.quote}"
+          </blockquote>
+
+          {/* Author */}
+          <div class="flex items-center gap-4">
+            <Avatar
+              name={testimonial.author}
+              src={testimonial.image}
+              size="lg"
+            />
+            <div>
+              <cite class="not-italic font-semibold text-[color:var(--color-text-primary)]">
+                {testimonial.author}
+              </cite>
+              <p class="text-sm text-[color:var(--color-text-muted)]">
+                {testimonial.role}
+              </p>
+            </div>
+          </div>
+
+          {/* Decorative element */}
+          <div class="absolute bottom-0 right-0 w-32 h-32 bg-[color:var(--color-accent)]/5 rounded-tl-full"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+)}

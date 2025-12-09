@@ -1,0 +1,177 @@
+---
+// src/components/ui/Select.astro
+// Created: Styled select dropdown with icon support and validation states
+
+interface SelectOption {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+
+interface Props {
+  name: string;
+  id?: string;
+  label?: string;
+  placeholder?: string;
+  options: SelectOption[];
+  value?: string;
+  required?: boolean;
+  disabled?: boolean;
+  error?: string;
+  hint?: string;
+  size?: 'sm' | 'md' | 'lg';
+  fullWidth?: boolean;
+  class?: string;
+}
+
+const {
+  name,
+  id = name,
+  label,
+  placeholder = 'Select an option',
+  options,
+  value,
+  required = false,
+  disabled = false,
+  error,
+  hint,
+  size = 'md',
+  fullWidth = false,
+  class: className,
+} = Astro.props;
+
+// Size styles
+const sizeStyles = {
+  sm: {
+    select: 'h-9 text-sm pl-3 pr-8',
+    label: 'text-sm',
+  },
+  md: {
+    select: 'h-11 text-base pl-4 pr-10',
+    label: 'text-sm',
+  },
+  lg: {
+    select: 'h-13 text-lg pl-4 pr-12',
+    label: 'text-base',
+  },
+};
+
+const sizes = sizeStyles[size];
+const hasError = !!error;
+---
+
+<div class:list={[fullWidth ? 'w-full' : 'w-auto', className]}>
+  {label && (
+    <label
+      for={id}
+      class:list={[
+        'block font-medium text-[color:var(--color-text-primary)] mb-2',
+        sizes.label,
+      ]}
+    >
+      {label}
+      {required && <span class="text-red-500 ml-1" aria-hidden="true">*</span>}
+    </label>
+  )}
+
+  <div class="relative">
+    <select
+      name={name}
+      id={id}
+      required={required}
+      disabled={disabled}
+      aria-invalid={hasError}
+      aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
+      class:list={[
+        'block w-full appearance-none',
+        'bg-[color:var(--color-bg-tertiary)]',
+        'border rounded-xl',
+        'transition-all duration-[var(--duration-fast)]',
+        'focus:outline-none focus:ring-2 focus:ring-offset-0',
+        sizes.select,
+        hasError
+          ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500'
+          : 'border-[color:var(--color-border)] focus:ring-[color:var(--color-accent)]/20 focus:border-[color:var(--color-accent)]',
+        disabled && 'opacity-50 cursor-not-allowed',
+        'cursor-pointer',
+      ]}
+    >
+      <option value="" disabled selected={!value}>
+        {placeholder}
+      </option>
+      {options.map((option) => (
+        <option
+          value={option.value}
+          disabled={option.disabled}
+          selected={option.value === value}
+        >
+          {option.label}
+        </option>
+      ))}
+    </select>
+
+    {/* Dropdown icon */}
+    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+      <svg
+        class:list={[
+          'w-5 h-5 text-[color:var(--color-text-muted)]',
+          disabled && 'opacity-50',
+        ]}
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+  </div>
+
+  {/* Hint text */}
+  {hint && !error && (
+    <p
+      id={`${id}-hint`}
+      class="mt-2 text-sm text-[color:var(--color-text-muted)]"
+    >
+      {hint}
+    </p>
+  )}
+
+  {/* Error message */}
+  {error && (
+    <p
+      id={`${id}-error`}
+      class="mt-2 text-sm text-red-500 flex items-center gap-1"
+      role="alert"
+    >
+      <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+        <path
+          fill-rule="evenodd"
+          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      {error}
+    </p>
+  )}
+</div>
+
+<style>
+  /* Custom select arrow for better cross-browser styling */
+  select {
+    background-image: none;
+  }
+  
+  /* Remove default arrow in IE */
+  select::-ms-expand {
+    display: none;
+  }
+  
+  /* Option styling (limited browser support) */
+  option {
+    padding: 0.5rem;
+  }
+  
+  option:disabled {
+    color: var(--color-text-muted);
+  }
+</style>

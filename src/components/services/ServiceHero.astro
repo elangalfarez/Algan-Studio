@@ -1,0 +1,94 @@
+---
+// src/components/services/ServiceHero.astro
+// Created: Hero section for individual service pages
+
+import Badge from '../ui/Badge.astro';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  title: string;
+  tagline: string;
+  description: string;
+  category: string;
+  image?: string;
+}
+
+const { title, tagline, description, category, image } = Astro.props;
+---
+
+<section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+  {/* Background gradient */}
+  <div class="absolute inset-0 bg-gradient-to-br from-[color:var(--color-bg-secondary)] via-[color:var(--color-bg-primary)] to-[color:var(--color-accent-subtle)]"></div>
+  
+  {/* Grid pattern */}
+  <div class="absolute inset-0 opacity-[0.02]" style="background-image: linear-gradient(var(--color-text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--color-text-primary) 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+  <div class="container relative z-10">
+    <div class="max-w-4xl">
+      {/* Breadcrumb */}
+      <nav class="mb-6" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-2 text-sm text-[color:var(--color-text-muted)]">
+          <li>
+            <a href="/" class="hover:text-[color:var(--color-accent)] transition-colors">Home</a>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li>
+            <a href="/services" class="hover:text-[color:var(--color-accent)] transition-colors">Services</a>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li>
+            <span class="text-[color:var(--color-text-secondary)]">{title}</span>
+          </li>
+        </ol>
+      </nav>
+
+      {/* Category badge */}
+      <Badge variant="default" class="mb-4">
+        {category}
+      </Badge>
+
+      {/* Title */}
+      <h1 
+        class="text-4xl md:text-5xl lg:text-6xl font-bold text-[color:var(--color-text-primary)] leading-tight mb-4"
+        data-animate="fade-up"
+      >
+        {title}
+      </h1>
+
+      {/* Tagline */}
+      <p 
+        class="text-xl md:text-2xl text-[color:var(--color-accent)] font-medium mb-6"
+        data-animate="fade-up"
+        data-delay="0.1"
+      >
+        {tagline}
+      </p>
+
+      {/* Description */}
+      <p 
+        class="text-lg text-[color:var(--color-text-tertiary)] max-w-2xl mb-8 leading-relaxed"
+        data-animate="fade-up"
+        data-delay="0.2"
+      >
+        {description}
+      </p>
+
+      {/* CTAs */}
+      <div 
+        class="flex flex-col sm:flex-row gap-4"
+        data-animate="fade-up"
+        data-delay="0.3"
+      >
+        <Button variant="primary" size="lg" href="#pricing">
+          View Pricing
+        </Button>
+        <Button variant="outline" size="lg" href="/contact">
+          Get a Quote
+        </Button>
+      </div>
+    </div>
+  </div>
+
+  {/* Decorative shape */}
+  <div class="absolute -right-20 top-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-[color:var(--color-accent)]/5 blur-3xl pointer-events-none" aria-hidden="true"></div>
+</section>

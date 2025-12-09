@@ -1,0 +1,120 @@
+---
+// src/pages/services/[slug].astro
+// Created: Dynamic service page template
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceHero from '../../components/services/ServiceHero.astro';
+import ServiceFeatures from '../../components/services/ServiceFeatures.astro';
+import ServiceBenefits from '../../components/services/ServiceBenefits.astro';
+import ServiceProcess from '../../components/services/ServiceProcess.astro';
+import PricingTable from '../../components/services/PricingTable.astro';
+import ServiceFAQ from '../../components/services/ServiceFAQ.astro';
+import RelatedServices from '../../components/services/RelatedServices.astro';
+import ServiceCTA from '../../components/services/ServiceCTA.astro';
+import { SERVICES_DATA, getAllServiceIds, getServiceData } from '../../lib/services-data';
+
+export async function getStaticPaths() {
+  const serviceIds = getAllServiceIds();
+  
+  return serviceIds.map((id) => ({
+    params: { slug: id },
+  }));
+}
+
+const { slug } = Astro.params;
+const service = getServiceData(slug as string);
+
+if (!service) {
+  return Astro.redirect('/404');
+}
+---
+
+<BaseLayout
+  title={service.title}
+  description={service.description}
+  image={service.heroImage}
+>
+  {/* Hero Section */}
+  <ServiceHero
+    title={service.title}
+    tagline={service.tagline}
+    description={service.description}
+    category={service.category}
+    image={service.heroImage}
+  />
+
+  {/* Features Grid */}
+  <ServiceFeatures
+    features={service.features}
+    title={`${service.title} Features`}
+    description={`Everything you need for ${service.title.toLowerCase()} success.`}
+  />
+
+  {/* Benefits / Why Choose Us */}
+  <ServiceBenefits
+    benefits={service.benefits}
+    longDescription={service.longDescription}
+  />
+
+  {/* Process Timeline */}
+  <ServiceProcess
+    steps={service.process}
+    title={`How We Deliver ${service.title}`}
+  />
+
+  {/* Pricing Table */}
+  <PricingTable
+    tiers={service.pricing}
+    serviceId={service.id}
+  />
+
+  {/* FAQ Section */}
+  <ServiceFAQ
+    faqs={service.faqs}
+    serviceTitle={service.title}
+  />
+
+  {/* Related Services */}
+  <RelatedServices
+    currentServiceId={service.id}
+    relatedIds={service.relatedServices}
+  />
+
+  {/* Final CTA */}
+  <ServiceCTA
+    title={service.title}
+    serviceId={service.id}
+  />
+</BaseLayout>
+
+{/* Service Schema markup */}
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": service.title,
+  "description": service.description,
+  "provider": {
+    "@type": "Organization",
+    "name": "Algan Studio",
+    "url": "https://algan.id"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Indonesia"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": `${service.title} Packages`,
+    "itemListElement": service.pricing.map((tier, index) => ({
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": `${service.title} - ${tier.name}`,
+        "description": tier.description
+      },
+      "price": tier.price === 'Custom' ? undefined : tier.price.replace(/[^\d]/g, ''),
+      "priceCurrency": "IDR",
+      "position": index + 1
+    }))
+  }
+})} />

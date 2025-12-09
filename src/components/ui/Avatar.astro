@@ -1,0 +1,137 @@
+---
+// src/components/ui/Avatar.astro
+// Created: Avatar component with fallback initials, status indicator, and image support
+
+interface Props {
+  src?: string;
+  alt?: string;
+  name?: string;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  shape?: 'circle' | 'square';
+  status?: 'online' | 'offline' | 'busy' | 'away' | 'none';
+  bordered?: boolean;
+  class?: string;
+}
+
+const {
+  src,
+  alt = '',
+  name = '',
+  size = 'md',
+  shape = 'circle',
+  status = 'none',
+  bordered = false,
+  class: className,
+} = Astro.props;
+
+// Get initials from name
+const getInitials = (name: string): string => {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+  return name.slice(0, 2).toUpperCase();
+};
+
+const initials = name ? getInitials(name) : '?';
+
+// Generate consistent color based on name
+const getColorFromName = (name: string): string => {
+  const colors = [
+    'bg-rose-500',
+    'bg-pink-500',
+    'bg-purple-500',
+    'bg-indigo-500',
+    'bg-blue-500',
+    'bg-cyan-500',
+    'bg-teal-500',
+    'bg-emerald-500',
+    'bg-amber-500',
+    'bg-orange-500',
+  ];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return colors[Math.abs(hash) % colors.length];
+};
+
+const bgColor = name ? getColorFromName(name) : 'bg-[color:var(--color-bg-tertiary)]';
+
+// Size styles
+const sizeStyles = {
+  xs: { avatar: 'w-6 h-6', text: 'text-[10px]', status: 'w-1.5 h-1.5' },
+  sm: { avatar: 'w-8 h-8', text: 'text-xs', status: 'w-2 h-2' },
+  md: { avatar: 'w-10 h-10', text: 'text-sm', status: 'w-2.5 h-2.5' },
+  lg: { avatar: 'w-12 h-12', text: 'text-base', status: 'w-3 h-3' },
+  xl: { avatar: 'w-16 h-16', text: 'text-lg', status: 'w-3.5 h-3.5' },
+  '2xl': { avatar: 'w-20 h-20', text: 'text-xl', status: 'w-4 h-4' },
+};
+
+// Shape styles
+const shapeStyles = {
+  circle: 'rounded-full',
+  square: 'rounded-xl',
+};
+
+// Status styles
+const statusStyles = {
+  online: 'bg-green-500',
+  offline: 'bg-gray-400',
+  busy: 'bg-red-500',
+  away: 'bg-amber-500',
+  none: '',
+};
+
+const sizes = sizeStyles[size];
+---
+
+<div
+  class:list={[
+    'relative inline-flex items-center justify-center flex-shrink-0',
+    sizes.avatar,
+    shapeStyles[shape],
+    bordered && 'ring-2 ring-[color:var(--color-bg-primary)] ring-offset-2 ring-offset-[color:var(--color-bg-primary)]',
+    className,
+  ]}
+>
+  {src ? (
+    <img
+      src={src}
+      alt={alt || name}
+      class:list={[
+        'w-full h-full object-cover',
+        shapeStyles[shape],
+      ]}
+      loading="lazy"
+      decoding="async"
+    />
+  ) : (
+    <div
+      class:list={[
+        'w-full h-full flex items-center justify-center',
+        'text-white font-semibold',
+        sizes.text,
+        bgColor,
+        shapeStyles[shape],
+      ]}
+      aria-label={name || 'User avatar'}
+    >
+      {initials}
+    </div>
+  )}
+
+  {/* Status indicator */}
+  {status !== 'none' && (
+    <span
+      class:list={[
+        'absolute bottom-0 right-0',
+        'border-2 border-[color:var(--color-bg-primary)]',
+        'rounded-full',
+        sizes.status,
+        statusStyles[status],
+      ]}
+      aria-label={`Status: ${status}`}
+    />
+  )}
+</div>

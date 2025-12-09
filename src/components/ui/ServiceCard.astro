@@ -1,0 +1,162 @@
+---
+// src/components/ui/ServiceCard.astro
+// Created: Service card with icon, title, description, and hover effects
+
+interface Props {
+  title: string;
+  description: string;
+  icon?: string;
+  href?: string;
+  features?: string[];
+  variant?: 'default' | 'featured' | 'compact';
+  class?: string;
+}
+
+const {
+  title,
+  description,
+  icon,
+  href,
+  features,
+  variant = 'default',
+  class: className,
+} = Astro.props;
+
+const Tag = href ? 'a' : 'div';
+
+// Variant styles
+const variantStyles = {
+  default: {
+    card: 'p-6 md:p-8',
+    icon: 'w-12 h-12',
+    title: 'text-xl',
+    desc: 'text-base',
+  },
+  featured: {
+    card: 'p-8 md:p-10 ring-2 ring-[color:var(--color-accent)]',
+    icon: 'w-14 h-14',
+    title: 'text-2xl',
+    desc: 'text-lg',
+  },
+  compact: {
+    card: 'p-4 md:p-6',
+    icon: 'w-10 h-10',
+    title: 'text-lg',
+    desc: 'text-sm',
+  },
+};
+
+const styles = variantStyles[variant];
+
+const hasSlot = Astro.slots.has('icon');
+---
+
+<Tag
+  href={href}
+  class:list={[
+    'service-card group block',
+    'bg-[color:var(--color-bg-tertiary)]',
+    'border border-[color:var(--color-border)]',
+    'rounded-2xl',
+    'transition-all duration-[var(--duration-normal)]',
+    'hover:shadow-[var(--shadow-lg)] hover:-translate-y-1',
+    'hover:border-[color:var(--color-accent)]/30',
+    href && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-[color:var(--color-accent)] focus:ring-offset-2',
+    styles.card,
+    className,
+  ]}
+>
+  {/* Icon */}
+  <div
+    class:list={[
+      'flex items-center justify-center',
+      'rounded-xl',
+      'bg-[color:var(--color-accent-subtle)]',
+      'text-[color:var(--color-accent)]',
+      'mb-5',
+      'group-hover:bg-[color:var(--color-accent)] group-hover:text-white',
+      'transition-colors duration-[var(--duration-normal)]',
+      styles.icon,
+    ]}
+  >
+    {hasSlot ? (
+      <slot name="icon" />
+    ) : icon ? (
+      <Fragment set:html={icon} />
+    ) : (
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    )}
+  </div>
+
+  {/* Title */}
+  <h3
+    class:list={[
+      'font-bold text-[color:var(--color-text-primary)]',
+      'group-hover:text-[color:var(--color-accent)]',
+      'transition-colors duration-[var(--duration-fast)]',
+      'mb-3',
+      styles.title,
+    ]}
+  >
+    {title}
+  </h3>
+
+  {/* Description */}
+  <p
+    class:list={[
+      'text-[color:var(--color-text-tertiary)] leading-relaxed',
+      features ? 'mb-4' : '',
+      styles.desc,
+    ]}
+  >
+    {description}
+  </p>
+
+  {/* Features list */}
+  {features && features.length > 0 && (
+    <ul class="space-y-2 mt-4">
+      {features.map((feature) => (
+        <li class="flex items-start gap-2 text-sm text-[color:var(--color-text-secondary)]">
+          <svg
+            class="w-5 h-5 text-[color:var(--color-accent)] flex-shrink-0 mt-0.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>{feature}</span>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {/* Arrow indicator for links */}
+  {href && (
+    <div class="mt-6 flex items-center gap-2 text-[color:var(--color-accent)] font-medium text-sm">
+      <span>Learn more</span>
+      <svg
+        class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    </div>
+  )}
+</Tag>
+
+<style>
+  @media (prefers-reduced-motion: reduce) {
+    .service-card {
+      transition: none;
+    }
+    
+    .service-card:hover {
+      transform: none;
+    }
+  }
+</style>

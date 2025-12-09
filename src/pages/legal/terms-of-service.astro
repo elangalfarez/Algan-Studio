@@ -1,0 +1,253 @@
+---
+// src/pages/legal/terms-of-service.astro
+// Created: Terms of service page
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Terms of Service"
+  description="Syarat dan ketentuan penggunaan layanan Algan Studio."
+>
+  <section class="relative pt-32 pb-8 md:pt-40 md:pb-12">
+    <div class="container">
+      <div class="max-w-3xl mx-auto">
+        <nav class="mb-6" aria-label="Breadcrumb">
+          <ol class="flex items-center gap-2 text-sm text-[color:var(--color-text-muted)]">
+            <li>
+              <a href="/" class="hover:text-[color:var(--color-accent)] transition-colors">Home</a>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <span class="text-[color:var(--color-text-secondary)]">Terms of Service</span>
+            </li>
+          </ol>
+        </nav>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-[color:var(--color-text-primary)] mb-4">
+          Terms of Service
+        </h1>
+        <p class="text-[color:var(--color-text-muted)]">
+          Terakhir diperbarui: 1 Januari 2024
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16 md:pb-24">
+    <div class="container">
+      <article class="max-w-3xl mx-auto prose-custom">
+        <div class="p-6 bg-[color:var(--color-bg-secondary)] rounded-xl border border-[color:var(--color-border)] mb-8">
+          <p class="text-sm text-[color:var(--color-text-tertiary)]">
+            Dengan menggunakan layanan Algan Studio ("Layanan"), Anda menyetujui 
+            Syarat dan Ketentuan ini. Harap baca dengan seksama sebelum menggunakan 
+            layanan kami.
+          </p>
+        </div>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            1. Definisi
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <ul class="list-disc pl-6 space-y-2">
+              <li><strong>"Algan Studio"</strong> mengacu pada perusahaan dan tim kami.</li>
+              <li><strong>"Klien"</strong> mengacu pada individu atau entitas yang menggunakan layanan kami.</li>
+              <li><strong>"Layanan"</strong> mengacu pada semua jasa yang kami sediakan termasuk digital marketing, web development, SEO, dan design.</li>
+              <li><strong>"Deliverables"</strong> mengacu pada output kerja yang dihasilkan untuk klien.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            2. Lingkup Layanan
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>
+              Lingkup layanan akan didefinisikan dalam proposal atau kontrak terpisah 
+              yang disepakati oleh kedua belah pihak. Layanan kami meliputi namun tidak 
+              terbatas pada:
+            </p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>Digital marketing dan advertising management</li>
+              <li>Search engine optimization (SEO)</li>
+              <li>Website dan web application development</li>
+              <li>Mobile application development</li>
+              <li>Branding dan design</li>
+              <li>Content creation dan social media management</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            3. Pembayaran
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <h3 class="font-medium text-[color:var(--color-text-primary)]">3.1 Struktur Pembayaran</h3>
+            <ul class="list-disc pl-6 space-y-2">
+              <li><strong>Retainer/Bulanan:</strong> Pembayaran di muka setiap awal periode.</li>
+              <li><strong>Project:</strong> 50% di muka, 50% setelah deliverables final.</li>
+              <li><strong>Custom:</strong> Sesuai kesepakatan dalam kontrak.</li>
+            </ul>
+            
+            <h3 class="font-medium text-[color:var(--color-text-primary)] mt-4">3.2 Keterlambatan Pembayaran</h3>
+            <p>
+              Keterlambatan pembayaran lebih dari 14 hari dapat mengakibatkan penghentian 
+              sementara layanan. Denda keterlambatan sebesar 2% per bulan dapat dikenakan.
+            </p>
+
+            <h3 class="font-medium text-[color:var(--color-text-primary)] mt-4">3.3 Pajak</h3>
+            <p>
+              Semua harga belum termasuk PPN 11% kecuali dinyatakan lain.
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            4. Kewajiban Klien
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>Klien setuju untuk:</p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>Menyediakan informasi, materi, dan akses yang diperlukan tepat waktu</li>
+              <li>Memberikan feedback dan approval dalam waktu yang wajar</li>
+              <li>Menjaga kerahasiaan akses credentials yang diberikan</li>
+              <li>Membayar sesuai jadwal yang disepakati</li>
+              <li>Tidak menggunakan layanan untuk aktivitas ilegal</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            5. Hak Kekayaan Intelektual
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <h3 class="font-medium text-[color:var(--color-text-primary)]">5.1 Transfer Kepemilikan</h3>
+            <p>
+              Setelah pembayaran penuh, kepemilikan deliverables final ditransfer ke klien, 
+              kecuali:
+            </p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>Komponen pihak ketiga (fonts, stock images, libraries) yang memiliki lisensi terpisah</li>
+              <li>Tools dan templates internal Algan Studio</li>
+            </ul>
+
+            <h3 class="font-medium text-[color:var(--color-text-primary)] mt-4">5.2 Portfolio Rights</h3>
+            <p>
+              Algan Studio berhak menampilkan deliverables dalam portfolio dan materi 
+              marketing, kecuali ada perjanjian NDA yang melarang.
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            6. Kerahasiaan
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>
+              Kedua belah pihak setuju untuk menjaga kerahasiaan informasi sensitif 
+              yang dibagikan selama kerja sama. Ini termasuk:
+            </p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>Strategi bisnis dan marketing</li>
+              <li>Data pelanggan</li>
+              <li>Informasi keuangan</li>
+              <li>Materi yang belum dipublikasi</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            7. Batasan Tanggung Jawab
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>
+              Algan Studio tidak bertanggung jawab atas:
+            </p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>Kerugian tidak langsung, konsekuensial, atau insidental</li>
+              <li>Perubahan algoritma platform pihak ketiga (Google, Meta, dll)</li>
+              <li>Downtime atau masalah pada layanan pihak ketiga</li>
+              <li>Hasil yang tidak tercapai karena informasi klien yang tidak akurat</li>
+            </ul>
+            <p>
+              Total liability kami tidak akan melebihi jumlah yang dibayarkan klien 
+              untuk layanan terkait dalam 12 bulan terakhir.
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            8. Pembatalan dan Refund
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <h3 class="font-medium text-[color:var(--color-text-primary)]">8.1 Pembatalan oleh Klien</h3>
+            <ul class="list-disc pl-6 space-y-2">
+              <li><strong>Retainer:</strong> Pemberitahuan 30 hari sebelum akhir periode</li>
+              <li><strong>Project:</strong> Pembayaran untuk pekerjaan yang sudah selesai tidak dapat di-refund</li>
+            </ul>
+
+            <h3 class="font-medium text-[color:var(--color-text-primary)] mt-4">8.2 Pembatalan oleh Algan Studio</h3>
+            <p>
+              Kami berhak membatalkan layanan dengan pemberitahuan 14 hari jika klien 
+              melanggar ketentuan ini atau gagal membayar.
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            9. Penyelesaian Sengketa
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>
+              Sengketa akan diselesaikan terlebih dahulu melalui negosiasi. Jika tidak 
+              tercapai kesepakatan, sengketa akan diselesaikan melalui arbitrase di 
+              Jakarta sesuai dengan hukum Indonesia.
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            10. Perubahan Ketentuan
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>
+              Kami dapat memperbarui Syarat dan Ketentuan ini dari waktu ke waktu. 
+              Perubahan akan diberitahukan kepada klien aktif melalui email. 
+              Penggunaan layanan setelah perubahan dianggap sebagai persetujuan.
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">
+            11. Hubungi Kami
+          </h2>
+          <div class="space-y-4 text-[color:var(--color-text-tertiary)]">
+            <p>Untuk pertanyaan tentang Syarat dan Ketentuan ini:</p>
+            <ul class="list-none space-y-2">
+              <li><strong>Email:</strong> legal@algan.id</li>
+              <li><strong>Alamat:</strong> Jl. Sudirman No. 123, Jakarta Pusat 10220</li>
+              <li><strong>Telepon:</strong> +62 21 1234 5678</li>
+            </ul>
+          </div>
+        </section>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose-custom strong {
+    color: var(--color-text-primary);
+  }
+</style>

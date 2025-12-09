@@ -1,0 +1,214 @@
+---
+// src/pages/blog/index.astro
+// Created: Blog listing page with filterable grid
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeader from '../../components/ui/SectionHeader.astro';
+import BlogCard from '../../components/blog/BlogCard.astro';
+import BlogFilter from '../../components/blog/BlogFilter.tsx';
+import BlogCTA from '../../components/blog/BlogCTA.astro';
+import { BLOG_POSTS, BLOG_CATEGORIES, getFeaturedBlogPosts, getRecentBlogPosts } from '../../lib/blog-data';
+
+// Get all blog posts sorted by date
+const allPosts = Object.values(BLOG_POSTS).sort(
+  (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+);
+const featuredPosts = getFeaturedBlogPosts();
+
+// Get category from URL if present
+const categoryParam = Astro.url.searchParams.get('category') || 'all';
+---
+
+<BaseLayout
+  title="Blog"
+  description="Tips, panduan, dan insight tentang digital marketing, SEO, web development, dan pertumbuhan bisnis online."
+>
+  {/* Hero Section */}
+  <section class="relative pt-32 pb-16 md:pt-40 md:pb-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[color:var(--color-bg-secondary)] via-[color:var(--color-bg-primary)] to-[color:var(--color-accent-subtle)]"></div>
+    
+    <div class="container relative z-10">
+      <div class="max-w-3xl">
+        <nav class="mb-6" aria-label="Breadcrumb">
+          <ol class="flex items-center gap-2 text-sm text-[color:var(--color-text-muted)]">
+            <li>
+              <a href="/" class="hover:text-[color:var(--color-accent)] transition-colors">Home</a>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <span class="text-[color:var(--color-text-secondary)]">Blog</span>
+            </li>
+          </ol>
+        </nav>
+
+        <h1 
+          class="text-4xl md:text-5xl lg:text-6xl font-bold text-[color:var(--color-text-primary)] leading-tight mb-6"
+          data-animate="fade-up"
+        >
+          Insights & 
+          <span class="text-[color:var(--color-accent)]">Resources</span>
+        </h1>
+
+        <p 
+          class="text-lg md:text-xl text-[color:var(--color-text-tertiary)] max-w-2xl leading-relaxed"
+          data-animate="fade-up"
+          data-delay="0.1"
+        >
+          Tips, panduan, dan strategi untuk membantu bisnis Anda tumbuh di era digital. 
+          Dari digital marketing hingga web development.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* Featured Posts (only show if viewing all) */}
+  {categoryParam === 'all' && featuredPosts.length > 0 && (
+    <section class="section-sm pb-0">
+      <div class="container">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="text-[color:var(--color-accent)] text-sm font-semibold uppercase tracking-wider">
+            Featured
+          </span>
+          <div class="flex-1 h-px bg-[color:var(--color-border)]"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {featuredPosts.slice(0, 2).map((post, index) => (
+            <div data-animate="fade-up" data-delay={String(index * 0.1)}>
+              <BlogCard
+                slug={post.slug}
+                title={post.title}
+                excerpt={post.excerpt}
+                category={post.category}
+                tags={post.tags}
+                author={post.author}
+                publishedAt={post.publishedAt}
+                readingTime={post.readingTime}
+                image={post.image}
+                imageAlt={post.imageAlt}
+                featured={true}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* Filter and Grid */}
+  <section class="section">
+    <div class="container">
+      {/* Section header with filter */}
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-12">
+        <div>
+          <span class="text-[color:var(--color-accent)] text-sm font-semibold uppercase tracking-wider mb-2 block">
+            All Posts
+          </span>
+          <h2 class="text-2xl md:text-3xl font-bold text-[color:var(--color-text-primary)]">
+            Latest Articles
+          </h2>
+        </div>
+
+        {/* Filter tabs */}
+        <div data-animate="fade-up">
+          <BlogFilter
+            client:load
+            categories={BLOG_CATEGORIES}
+            initialCategory={categoryParam}
+            onFilterChange={(category) => {
+              // Handled client-side
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Blog Grid */}
+      <div 
+        id="blog-grid"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        data-stagger="0.1"
+      >
+        {allPosts.map((post, index) => (
+          <div 
+            data-stagger-item
+            data-category={post.category}
+            class="blog-post-item"
+          >
+            <BlogCard
+              slug={post.slug}
+              title={post.title}
+              excerpt={post.excerpt}
+              category={post.category}
+              tags={post.tags}
+              author={post.author}
+              publishedAt={post.publishedAt}
+              readingTime={post.readingTime}
+              image={post.image}
+              imageAlt={post.imageAlt}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Empty state */}
+      <div id="empty-state" class="hidden text-center py-16">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[color:var(--color-bg-secondary)] flex items-center justify-center">
+          <svg class="w-8 h-8 text-[color:var(--color-text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-[color:var(--color-text-primary)] mb-2">
+          No articles found
+        </h3>
+        <p class="text-[color:var(--color-text-muted)]">
+          Try selecting a different category or <a href="/blog" class="text-[color:var(--color-accent)] hover:underline">view all posts</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* Newsletter CTA */}
+  <BlogCTA variant="section" />
+</BaseLayout>
+
+{/* Client-side filtering script */}
+<script>
+  function filterBlogPosts(category: string) {
+    const items = document.querySelectorAll('.blog-post-item');
+    const emptyState = document.getElementById('empty-state');
+    let visibleCount = 0;
+
+    items.forEach((item) => {
+      const itemCategory = item.getAttribute('data-category');
+      const shouldShow = category === 'all' || itemCategory === category;
+      
+      if (shouldShow) {
+        item.classList.remove('hidden');
+        visibleCount++;
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+
+    // Show/hide empty state
+    if (emptyState) {
+      if (visibleCount === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+      }
+    }
+  }
+
+  // Listen for filter changes
+  window.addEventListener('blogFilterChange', ((e: CustomEvent) => {
+    filterBlogPosts(e.detail.category);
+  }) as EventListener);
+
+  // Initial filter based on URL
+  const params = new URLSearchParams(window.location.search);
+  const initialCategory = params.get('category') || 'all';
+  if (initialCategory !== 'all') {
+    filterBlogPosts(initialCategory);
+  }
+</script>

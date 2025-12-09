@@ -1,0 +1,190 @@
+---
+// src/pages/work/index.astro
+// Created: Portfolio listing page with filterable grid
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeader from '../../components/ui/SectionHeader.astro';
+import CaseStudyCard from '../../components/work/CaseStudyCard.astro';
+import WorkFilter from '../../components/work/WorkFilter.tsx';
+import WorkCTA from '../../components/work/WorkCTA.astro';
+import { CASE_STUDIES, WORK_CATEGORIES, getFeaturedCaseStudies, getCaseStudiesByCategory } from '../../lib/case-studies-data';
+
+// Get all case studies
+const allCaseStudies = Object.values(CASE_STUDIES);
+const featuredCaseStudies = getFeaturedCaseStudies();
+
+// Get category from URL if present (for SSR)
+const categoryParam = Astro.url.searchParams.get('category') || 'all';
+---
+
+<BaseLayout
+  title="Our Work"
+  description="Explore our portfolio of successful digital marketing, web development, app development, and design projects for Indonesian brands."
+>
+  {/* Hero Section */}
+  <section class="relative pt-32 pb-16 md:pt-40 md:pb-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[color:var(--color-bg-secondary)] via-[color:var(--color-bg-primary)] to-[color:var(--color-accent-subtle)]"></div>
+    
+    <div class="container relative z-10">
+      <div class="max-w-3xl">
+        <nav class="mb-6" aria-label="Breadcrumb">
+          <ol class="flex items-center gap-2 text-sm text-[color:var(--color-text-muted)]">
+            <li>
+              <a href="/" class="hover:text-[color:var(--color-accent)] transition-colors">Home</a>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <span class="text-[color:var(--color-text-secondary)]">Work</span>
+            </li>
+          </ol>
+        </nav>
+
+        <h1 
+          class="text-4xl md:text-5xl lg:text-6xl font-bold text-[color:var(--color-text-primary)] leading-tight mb-6"
+          data-animate="fade-up"
+        >
+          Results That
+          <span class="text-[color:var(--color-accent)]"> Speak Louder</span>
+        </h1>
+
+        <p 
+          class="text-lg md:text-xl text-[color:var(--color-text-tertiary)] max-w-2xl leading-relaxed"
+          data-animate="fade-up"
+          data-delay="0.1"
+        >
+          We don't just deliver projects—we deliver transformations. 
+          Explore case studies that showcase real results for real businesses.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* Stats bar */}
+  <section class="py-8 border-y border-[color:var(--color-border)] bg-[color:var(--color-bg-secondary)]">
+    <div class="container">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div>
+          <div class="text-2xl md:text-3xl font-bold text-[color:var(--color-accent)]">500+</div>
+          <div class="text-sm text-[color:var(--color-text-muted)]">Projects Delivered</div>
+        </div>
+        <div>
+          <div class="text-2xl md:text-3xl font-bold text-[color:var(--color-accent)]">98%</div>
+          <div class="text-sm text-[color:var(--color-text-muted)]">Client Satisfaction</div>
+        </div>
+        <div>
+          <div class="text-2xl md:text-3xl font-bold text-[color:var(--color-accent)]">Rp 50B+</div>
+          <div class="text-sm text-[color:var(--color-text-muted)]">Revenue Generated</div>
+        </div>
+        <div>
+          <div class="text-2xl md:text-3xl font-bold text-[color:var(--color-accent)]">15+</div>
+          <div class="text-sm text-[color:var(--color-text-muted)]">Industries Served</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Filter and Grid */}
+  <section class="section">
+    <div class="container">
+      {/* Filter tabs */}
+      <div class="mb-12" data-animate="fade-up">
+        <WorkFilter
+          client:load
+          categories={WORK_CATEGORIES}
+          initialCategory={categoryParam}
+          onFilterChange={(category) => {
+            // This will be handled client-side
+          }}
+        />
+      </div>
+
+      {/* Case Studies Grid */}
+      <div 
+        id="work-grid"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        data-stagger="0.1"
+      >
+        {allCaseStudies.map((caseStudy, index) => (
+          <div 
+            data-stagger-item
+            data-category={caseStudy.category}
+            class="case-study-item"
+          >
+            <CaseStudyCard
+              id={caseStudy.id}
+              title={caseStudy.title}
+              client={caseStudy.client}
+              category={caseStudy.category}
+              tags={caseStudy.tags}
+              excerpt={caseStudy.excerpt}
+              thumbnail={caseStudy.images.thumbnail}
+              metrics={caseStudy.metrics.slice(0, 2)}
+              featured={caseStudy.featured && index < 4}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Empty state (shown via JS when filter returns no results) */}
+      <div id="empty-state" class="hidden text-center py-16">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[color:var(--color-bg-secondary)] flex items-center justify-center">
+          <svg class="w-8 h-8 text-[color:var(--color-text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-[color:var(--color-text-primary)] mb-2">
+          No projects found
+        </h3>
+        <p class="text-[color:var(--color-text-muted)]">
+          Try selecting a different category or <a href="/work" class="text-[color:var(--color-accent)] hover:underline">view all work</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* CTA Section */}
+  <WorkCTA />
+</BaseLayout>
+
+{/* Client-side filtering script */}
+<script>
+  // Handle filter changes
+  function filterCaseStudies(category: string) {
+    const items = document.querySelectorAll('.case-study-item');
+    const emptyState = document.getElementById('empty-state');
+    let visibleCount = 0;
+
+    items.forEach((item) => {
+      const itemCategory = item.getAttribute('data-category');
+      const shouldShow = category === 'all' || itemCategory === category;
+      
+      if (shouldShow) {
+        item.classList.remove('hidden');
+        visibleCount++;
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+
+    // Show/hide empty state
+    if (emptyState) {
+      if (visibleCount === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+      }
+    }
+  }
+
+  // Listen for filter changes from React component
+  window.addEventListener('filterChange', ((e: CustomEvent) => {
+    filterCaseStudies(e.detail.category);
+  }) as EventListener);
+
+  // Initial filter based on URL
+  const params = new URLSearchParams(window.location.search);
+  const initialCategory = params.get('category') || 'all';
+  if (initialCategory !== 'all') {
+    filterCaseStudies(initialCategory);
+  }
+</script>

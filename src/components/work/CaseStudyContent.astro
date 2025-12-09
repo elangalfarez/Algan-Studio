@@ -1,0 +1,104 @@
+---
+// src/components/work/CaseStudyContent.astro
+// Created: Main content sections for case study pages (Challenge, Solution, Results)
+
+interface Props {
+  challenge: string;
+  solution: string;
+  results: string;
+}
+
+const { challenge, solution, results } = Astro.props;
+
+// Helper to convert markdown-like text to HTML
+function formatContent(content: string): string {
+  return content
+    .split('\n\n')
+    .map(paragraph => {
+      // Check if it's a heading (starts with **)
+      if (paragraph.startsWith('**') && paragraph.includes('**\n')) {
+        const [heading, ...rest] = paragraph.split('\n');
+        const headingText = heading.replace(/\*\*/g, '');
+        return `<h4 class="text-lg font-semibold text-[color:var(--color-text-primary)] mt-6 mb-3">${headingText}</h4><p>${rest.join(' ')}</p>`;
+      }
+      // Check if it's a list
+      if (paragraph.startsWith('- ')) {
+        const items = paragraph.split('\n- ').map(item => item.replace(/^- /, ''));
+        return `<ul class="list-disc list-inside space-y-2 text-[color:var(--color-text-tertiary)]">${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+      }
+      return `<p class="text-[color:var(--color-text-tertiary)] leading-relaxed">${paragraph}</p>`;
+    })
+    .join('');
+}
+---
+
+<section class="section">
+  <div class="container">
+    <div class="max-w-4xl mx-auto">
+      {/* The Challenge */}
+      <div class="mb-16" data-animate="fade-up">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-12 h-12 rounded-full bg-rose-500/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-[color:var(--color-text-primary)]">
+            The Challenge
+          </h2>
+        </div>
+        <div class="prose prose-lg max-w-none" set:html={formatContent(challenge)} />
+      </div>
+
+      {/* The Solution */}
+      <div class="mb-16" data-animate="fade-up" data-delay="0.1">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-[color:var(--color-text-primary)]">
+            Our Solution
+          </h2>
+        </div>
+        <div class="prose prose-lg max-w-none" set:html={formatContent(solution)} />
+      </div>
+
+      {/* The Results */}
+      <div data-animate="fade-up" data-delay="0.2">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-[color:var(--color-text-primary)]">
+            The Results
+          </h2>
+        </div>
+        <div class="prose prose-lg max-w-none" set:html={formatContent(results)} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .prose h4 {
+    color: var(--color-text-primary);
+  }
+  
+  .prose p {
+    color: var(--color-text-tertiary);
+    margin-bottom: 1rem;
+  }
+  
+  .prose ul {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .prose li {
+    color: var(--color-text-tertiary);
+  }
+</style>

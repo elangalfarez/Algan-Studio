@@ -1,0 +1,210 @@
+---
+// src/components/home/Hero.astro
+// Created: Homepage hero section with animated headline, CTAs, and floating elements
+
+import Button from '../ui/Button.astro';
+import { SITE_CONFIG } from '../../lib/constants';
+---
+
+<section
+  class="hero relative min-h-[90vh] flex items-center overflow-hidden"
+  aria-label="Hero section"
+>
+  {/* Background gradient */}
+  <div class="absolute inset-0 bg-gradient-to-br from-[color:var(--color-bg-primary)] via-[color:var(--color-bg-secondary)] to-[color:var(--color-accent-subtle)] opacity-50"></div>
+  
+  {/* Animated grid pattern */}
+  <div class="absolute inset-0 hero-grid opacity-[0.03]"></div>
+  
+  {/* Floating shapes */}
+  <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+    <div class="floating-shape shape-1 absolute w-72 h-72 rounded-full bg-[color:var(--color-accent)]/10 blur-3xl"></div>
+    <div class="floating-shape shape-2 absolute w-96 h-96 rounded-full bg-[color:var(--color-brand-primary)]/10 blur-3xl"></div>
+    <div class="floating-shape shape-3 absolute w-64 h-64 rounded-full bg-[color:var(--color-accent-light)]/10 blur-3xl"></div>
+  </div>
+
+  <div class="container relative z-10">
+    <div class="max-w-4xl mx-auto text-center">
+      {/* Eyebrow */}
+      <div
+        class="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-[color:var(--color-accent-subtle)] border border-[color:var(--color-accent)]/20"
+        data-animate="fade-up"
+      >
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[color:var(--color-accent)] opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-[color:var(--color-accent)]"></span>
+        </span>
+        <span class="text-sm font-medium text-[color:var(--color-accent)]">
+          Now accepting Q1 2025 projects
+        </span>
+      </div>
+
+      {/* Main headline */}
+      <h1
+        class="hero-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[color:var(--color-text-primary)] leading-[1.1] tracking-tight mb-6"
+        data-animate="fade-up"
+        data-delay="0.1"
+      >
+        <span class="block">Smart Digital Solutions.</span>
+        <span class="block text-[color:var(--color-accent)]">World-Class Execution.</span>
+      </h1>
+
+      {/* Subheadline */}
+      <p
+        class="text-lg md:text-xl text-[color:var(--color-text-tertiary)] max-w-2xl mx-auto mb-8 leading-relaxed"
+        data-animate="fade-up"
+        data-delay="0.2"
+      >
+        The go-to digital partner for ambitious brands who refuse to settle for mediocre. 
+        We combine consultancy-level strategy with execution that actually works.
+      </p>
+
+      {/* CTA Buttons */}
+      <div
+        class="flex flex-col sm:flex-row items-center justify-center gap-4"
+        data-animate="fade-up"
+        data-delay="0.3"
+      >
+        <Button variant="primary" size="lg" href="/contact" magnetic>
+          Start Your Project
+          <svg slot="icon-right" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </Button>
+        <Button variant="outline" size="lg" href="/work">
+          View Our Work
+        </Button>
+      </div>
+
+      {/* Trust indicators */}
+      <div
+        class="mt-12 pt-8 border-t border-[color:var(--color-border)]"
+        data-animate="fade-up"
+        data-delay="0.4"
+      >
+        <p class="text-sm text-[color:var(--color-text-muted)] mb-4">
+          Trusted by leading brands across Indonesia
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-8 opacity-60">
+          {/* Placeholder logos - will be replaced with actual client logos */}
+          {['LuxeStyle', 'TechFlow', 'GreenMart', 'FinanceFirst', 'FoodieApp'].map((brand) => (
+            <div class="text-[color:var(--color-text-muted)] font-semibold tracking-wide text-sm uppercase">
+              {brand}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Scroll indicator */}
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block" data-animate="fade-up" data-delay="0.5">
+    <a
+      href="#services"
+      class="flex flex-col items-center gap-2 text-[color:var(--color-text-muted)] hover:text-[color:var(--color-accent)] transition-colors"
+      aria-label="Scroll to services"
+    >
+      <span class="text-xs uppercase tracking-widest">Scroll</span>
+      <div class="scroll-indicator w-6 h-10 rounded-full border-2 border-current flex items-start justify-center p-1">
+        <div class="w-1 h-2 rounded-full bg-current animate-bounce"></div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<style>
+  /* Grid pattern background */
+  .hero-grid {
+    background-image: 
+      linear-gradient(var(--color-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* Floating shapes animation */
+  .floating-shape {
+    animation: float 20s ease-in-out infinite;
+  }
+
+  .shape-1 {
+    top: 10%;
+    left: -10%;
+    animation-delay: 0s;
+  }
+
+  .shape-2 {
+    top: 50%;
+    right: -15%;
+    animation-delay: -7s;
+  }
+
+  .shape-3 {
+    bottom: 10%;
+    left: 30%;
+    animation-delay: -14s;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    25% {
+      transform: translate(30px, -30px) scale(1.05);
+    }
+    50% {
+      transform: translate(-20px, 20px) scale(0.95);
+    }
+    75% {
+      transform: translate(20px, 30px) scale(1.02);
+    }
+  }
+
+  /* Headline letter animation */
+  .hero-headline {
+    opacity: 0;
+    animation: headline-reveal 0.8s ease-out 0.2s forwards;
+  }
+
+  @keyframes headline-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Scroll indicator bounce */
+  .scroll-indicator div {
+    animation: scroll-bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes scroll-bounce {
+    0%, 100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(8px);
+      opacity: 0.5;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .floating-shape {
+      animation: none;
+    }
+    
+    .hero-headline {
+      animation: none;
+      opacity: 1;
+    }
+    
+    .scroll-indicator div {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,163 @@
+---
+// src/components/ui/ProcessStep.astro
+// Created: Process/workflow step component with connector lines
+
+interface Props {
+  step: number;
+  title: string;
+  description: string;
+  isLast?: boolean;
+  isActive?: boolean;
+  isCompleted?: boolean;
+  variant?: 'vertical' | 'horizontal';
+  class?: string;
+}
+
+const {
+  step,
+  title,
+  description,
+  isLast = false,
+  isActive = false,
+  isCompleted = false,
+  variant = 'vertical',
+  class: className,
+} = Astro.props;
+
+const hasSlot = Astro.slots.has('icon');
+---
+
+{variant === 'vertical' ? (
+  <div class:list={['relative flex gap-6', className]}>
+    {/* Step indicator and line */}
+    <div class="flex flex-col items-center">
+      {/* Step circle */}
+      <div
+        class:list={[
+          'relative z-10 flex items-center justify-center',
+          'w-12 h-12 rounded-full',
+          'font-bold text-lg',
+          'transition-all duration-[var(--duration-normal)]',
+          isCompleted
+            ? 'bg-[color:var(--color-accent)] text-white'
+            : isActive
+              ? 'bg-[color:var(--color-accent)] text-white ring-4 ring-[color:var(--color-accent)]/20'
+              : 'bg-[color:var(--color-bg-tertiary)] text-[color:var(--color-text-muted)] border-2 border-[color:var(--color-border)]',
+        ]}
+      >
+        {isCompleted ? (
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        ) : hasSlot ? (
+          <slot name="icon" />
+        ) : (
+          step
+        )}
+      </div>
+      
+      {/* Connector line */}
+      {!isLast && (
+        <div
+          class:list={[
+            'w-0.5 flex-1 min-h-[4rem]',
+            isCompleted
+              ? 'bg-[color:var(--color-accent)]'
+              : 'bg-[color:var(--color-border)]',
+          ]}
+        />
+      )}
+    </div>
+
+    {/* Content */}
+    <div class:list={['flex-1 pb-8', isLast && 'pb-0']}>
+      <h3
+        class:list={[
+          'font-bold text-lg mb-2',
+          isActive || isCompleted
+            ? 'text-[color:var(--color-text-primary)]'
+            : 'text-[color:var(--color-text-muted)]',
+        ]}
+      >
+        {title}
+      </h3>
+      <p
+        class:list={[
+          'text-base leading-relaxed',
+          isActive || isCompleted
+            ? 'text-[color:var(--color-text-secondary)]'
+            : 'text-[color:var(--color-text-muted)]',
+        ]}
+      >
+        {description}
+      </p>
+      <slot />
+    </div>
+  </div>
+) : (
+  /* Horizontal variant */
+  <div class:list={['relative flex flex-col items-center text-center', className]}>
+    {/* Step circle */}
+    <div
+      class:list={[
+        'relative z-10 flex items-center justify-center',
+        'w-14 h-14 rounded-full',
+        'font-bold text-xl',
+        'transition-all duration-[var(--duration-normal)]',
+        isCompleted
+          ? 'bg-[color:var(--color-accent)] text-white'
+          : isActive
+            ? 'bg-[color:var(--color-accent)] text-white ring-4 ring-[color:var(--color-accent)]/20'
+            : 'bg-[color:var(--color-bg-tertiary)] text-[color:var(--color-text-muted)] border-2 border-[color:var(--color-border)]',
+      ]}
+    >
+      {isCompleted ? (
+        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+      ) : hasSlot ? (
+        <slot name="icon" />
+      ) : (
+        step
+      )}
+    </div>
+
+    {/* Connector line (positioned absolutely) */}
+    {!isLast && (
+      <div
+        class:list={[
+          'absolute top-7 left-[calc(50%+2rem)] right-[calc(-50%+2rem)] h-0.5',
+          isCompleted
+            ? 'bg-[color:var(--color-accent)]'
+            : 'bg-[color:var(--color-border)]',
+        ]}
+        aria-hidden="true"
+      />
+    )}
+
+    {/* Content */}
+    <div class="mt-4">
+      <h3
+        class:list={[
+          'font-bold text-base md:text-lg mb-2',
+          isActive || isCompleted
+            ? 'text-[color:var(--color-text-primary)]'
+            : 'text-[color:var(--color-text-muted)]',
+        ]}
+      >
+        {title}
+      </h3>
+      <p
+        class:list={[
+          'text-sm leading-relaxed max-w-[200px] mx-auto',
+          isActive || isCompleted
+            ? 'text-[color:var(--color-text-secondary)]'
+            : 'text-[color:var(--color-text-muted)]',
+        ]}
+      >
+        {description}
+      </p>
+      <slot />
+    </div>
+  </div>
+)}

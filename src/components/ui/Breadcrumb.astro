@@ -1,0 +1,103 @@
+---
+// src/components/ui/Breadcrumb.astro
+// Created: Accessible breadcrumb navigation with Schema.org markup
+
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+  separator?: 'chevron' | 'slash' | 'arrow';
+  class?: string;
+}
+
+const {
+  items,
+  separator = 'chevron',
+  class: className,
+} = Astro.props;
+
+// Generate Schema.org BreadcrumbList markup
+const schemaItems = items.map((item, index) => ({
+  '@type': 'ListItem',
+  position: index + 1,
+  name: item.label,
+  ...(item.href && { item: new URL(item.href, Astro.site || Astro.url.origin).href }),
+}));
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: schemaItems,
+};
+---
+
+<nav
+  aria-label="Breadcrumb"
+  class:list={['text-sm', className]}
+>
+  <ol
+    class="flex flex-wrap items-center gap-2"
+    itemscope
+    itemtype="https://schema.org/BreadcrumbList"
+  >
+    {items.map((item, index) => {
+      const isLast = index === items.length - 1;
+      
+      return (
+        <li
+          class="flex items-center gap-2"
+          itemprop="itemListElement"
+          itemscope
+          itemtype="https://schema.org/ListItem"
+        >
+          {item.href && !isLast ? (
+            <a
+              href={item.href}
+              class="text-[color:var(--color-text-muted)] hover:text-[color:var(--color-accent)] transition-colors"
+              itemprop="item"
+            >
+              <span itemprop="name">{item.label}</span>
+            </a>
+          ) : (
+            <span
+              class:list={[
+                isLast 
+                  ? 'text-[color:var(--color-text-primary)] font-medium' 
+                  : 'text-[color:var(--color-text-muted)]',
+              ]}
+              itemprop="name"
+              aria-current={isLast ? 'page' : undefined}
+            >
+              {item.label}
+            </span>
+          )}
+          <meta itemprop="position" content={String(index + 1)} />
+          
+          {!isLast && (
+            <span class="text-[color:var(--color-text-muted)]" aria-hidden="true">
+              {separator === 'chevron' && (
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              )}
+              {separator === 'slash' && (
+                <span>/</span>
+              )}
+              {separator === 'arrow' && (
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              )}
+            </span>
+          )}
+        </li>
+      );
+    })}
+  </ol>
+</nav>
+
+<!-- Schema.org JSON-LD -->
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
