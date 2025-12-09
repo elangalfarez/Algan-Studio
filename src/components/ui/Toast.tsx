@@ -34,7 +34,7 @@ export function useToast() {
 // Convenience methods
 export function useToastActions() {
   const { addToast } = useToast();
-  
+
   return {
     success: (title: string, description?: string) =>
       addToast({ type: 'success', title, description }),
@@ -61,7 +61,7 @@ export function ToastProvider({
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const addToast = useCallback((toast: Omit<Toast, 'id'>) => {
-    const id = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const id = `toast-${Math.random().toString(36).slice(2, 11)}`;
     const newToast = { ...toast, id, duration: toast.duration ?? 5000 };
 
     setToasts((prev) => {
@@ -95,7 +95,7 @@ export function ToastProvider({
   return (
     <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
       {children}
-      
+
       {/* Toast Container */}
       <div
         className={`fixed z-[var(--z-toast)] ${positionStyles[position]} flex flex-col gap-3 pointer-events-none`}
@@ -206,7 +206,7 @@ function ToastItem({ toast, onDismiss, position }: ToastItemProps) {
         <span className={`flex-shrink-0 ${colors.icon}`}>
           {icons[toast.type]}
         </span>
-        
+
         <div className="flex-1 min-w-0">
           <p className={`font-semibold ${colors.title}`}>
             {toast.title}
@@ -217,7 +217,7 @@ function ToastItem({ toast, onDismiss, position }: ToastItemProps) {
             </p>
           )}
         </div>
-        
+
         <button
           onClick={onDismiss}
           className={`

@@ -2,7 +2,7 @@
 // src/components/work/CaseStudyCard.astro
 // Created: Case study card component for portfolio grid
 
-import Badge from '../ui/Badge.astro';
+import Badge from "../ui/Badge.astro";
 
 interface Props {
   id: string;
@@ -16,40 +16,57 @@ interface Props {
   featured?: boolean;
 }
 
-const { id, title, client, category, tags, excerpt, thumbnail, metrics, featured = false } = Astro.props;
+const {
+  id,
+  title,
+  client,
+  category,
+  tags,
+  excerpt,
+  thumbnail,
+  metrics,
+  featured = false,
+} = Astro.props;
 
 // Category color mapping
 const categoryColors: Record<string, string> = {
-  'digital-marketing': 'bg-blue-500/10 text-blue-600',
-  'web-development': 'bg-emerald-500/10 text-emerald-600',
-  'app-development': 'bg-violet-500/10 text-violet-600',
-  'design': 'bg-rose-500/10 text-rose-600',
+  "digital-marketing": "bg-blue-500/10 text-blue-600",
+  "web-development": "bg-emerald-500/10 text-emerald-600",
+  "app-development": "bg-violet-500/10 text-violet-600",
+  design: "bg-rose-500/10 text-rose-600",
 };
 ---
 
 <a
   href={`/work/${id}`}
   class:list={[
-    'case-study-card group block relative rounded-2xl overflow-hidden',
-    'bg-[color:var(--color-bg-primary)] border border-[color:var(--color-border)]',
-    'hover:border-[color:var(--color-accent)]/30 hover:shadow-[var(--shadow-xl)]',
-    'transition-all duration-300',
-    featured && 'md:col-span-2 lg:col-span-2',
+    "case-study-card group block relative rounded-2xl overflow-hidden",
+    "bg-[color:var(--color-bg-primary)] border border-[color:var(--color-border)]",
+    "hover:border-[color:var(--color-accent)]/30 hover:shadow-[var(--shadow-xl)]",
+    "transition-all duration-300",
+    featured && "md:col-span-2 lg:col-span-2",
   ]}
 >
   {/* Image container */}
-  <div class:list={[
-    'relative overflow-hidden',
-    featured ? 'aspect-[16/9]' : 'aspect-[4/3]',
-  ]}>
+  <div
+    class:list={[
+      "relative overflow-hidden",
+      featured ? "aspect-[16/9]" : "aspect-[4/3]",
+    ]}
+  >
     {/* Placeholder gradient - replace with actual image */}
-    <div class="absolute inset-0 bg-gradient-to-br from-[color:var(--color-bg-secondary)] to-[color:var(--color-bg-tertiary)]">
-      <div class="w-full h-full flex items-center justify-center text-[color:var(--color-text-muted)]">
+    <div
+      class="absolute inset-0 bg-gradient-to-br from-[color:var(--color-bg-secondary)] to-[color:var(--color-bg-tertiary)]"
+    >
+      <div
+        class="w-full h-full flex items-center justify-center text-[color:var(--color-text-muted)]"
+      >
         <span class="text-sm">{client}</span>
       </div>
     </div>
-    
-    {/* Uncomment when images are ready
+
+    {
+      /* Uncomment when images are ready
     <img
       src={thumbnail}
       alt={`${title} case study preview`}
@@ -57,24 +74,34 @@ const categoryColors: Record<string, string> = {
       loading="lazy"
       decoding="async"
     />
-    */}
+    */
+    }
 
     {/* Overlay on hover */}
-    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+    >
+    </div>
 
     {/* Featured badge */}
-    {featured && (
-      <div class="absolute top-4 left-4">
-        <Badge variant="primary" size="sm">Featured</Badge>
-      </div>
-    )}
+    {
+      featured && (
+        <div class="absolute top-4 left-4">
+          <Badge variant="primary" size="sm">
+            Featured
+          </Badge>
+        </div>
+      )
+    }
 
     {/* Category badge */}
     <div class="absolute top-4 right-4">
-      <span class:list={[
-        'px-3 py-1 text-xs font-medium rounded-full',
-        categoryColors[category] || 'bg-gray-500/10 text-gray-600',
-      ]}>
+      <span
+        class:list={[
+          "px-3 py-1 text-xs font-medium rounded-full",
+          categoryColors[category] || "bg-gray-500/10 text-gray-600",
+        ]}
+      >
         {tags[0]}
       </span>
     </div>
@@ -88,35 +115,52 @@ const categoryColors: Record<string, string> = {
     </p>
 
     {/* Title */}
-    <h3 class="text-xl font-bold text-[color:var(--color-text-primary)] mb-2 group-hover:text-[color:var(--color-accent)] transition-colors line-clamp-2">
+    <h3
+      class="text-xl font-bold text-[color:var(--color-text-primary)] mb-2 group-hover:text-[color:var(--color-accent)] transition-colors line-clamp-2"
+    >
       {title}
     </h3>
 
     {/* Excerpt */}
-    <p class="text-[color:var(--color-text-tertiary)] text-sm mb-4 line-clamp-2">
+    <p
+      class="text-[color:var(--color-text-tertiary)] text-sm mb-4 line-clamp-2"
+    >
       {excerpt}
     </p>
 
     {/* Key metrics */}
-    {metrics.length > 0 && (
-      <div class="flex flex-wrap gap-4 pt-4 border-t border-[color:var(--color-border)]">
-        {metrics.slice(0, featured ? 4 : 2).map((metric) => (
-          <div>
-            <div class="text-lg font-bold text-[color:var(--color-accent)]">
-              {metric.value}
+    {
+      metrics.length > 0 && (
+        <div class="flex flex-wrap gap-4 pt-4 border-t border-[color:var(--color-border)]">
+          {metrics.slice(0, featured ? 4 : 2).map((metric) => (
+            <div>
+              <div class="text-lg font-bold text-[color:var(--color-accent)]">
+                {metric.value}
+              </div>
+              <div class="text-xs text-[color:var(--color-text-muted)]">
+                {metric.label}
+              </div>
             </div>
-            <div class="text-xs text-[color:var(--color-text-muted)]">
-              {metric.label}
-            </div>
-          </div>
-        ))}
-      </div>
-    )}
+          ))}
+        </div>
+      )
+    }
 
     {/* View arrow */}
-    <div class="absolute bottom-6 right-6 w-10 h-10 rounded-full bg-[color:var(--color-accent-subtle)] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
-      <svg class="w-5 h-5 text-[color:var(--color-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+    <div
+      class="absolute bottom-6 right-6 w-10 h-10 rounded-full bg-[color:var(--color-accent-subtle)] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0"
+    >
+      <svg
+        class="w-5 h-5 text-[color:var(--color-accent)]"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
       </svg>
     </div>
   </div>
@@ -134,7 +178,7 @@ const categoryColors: Record<string, string> = {
     .case-study-card img {
       transition: none;
     }
-    
+
     .case-study-card:hover img {
       transform: none;
     }

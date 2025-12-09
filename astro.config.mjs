@@ -5,21 +5,23 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
-import { bundledLanguages } from 'shiki';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://algan.id',
-  
+
   integrations: [
     // React for interactive islands
     react(),
-    
+
     // Tailwind CSS
     tailwind({
-      applyBaseStyles: false, // We use our own global.css
+      applyBaseStyles: false, // Use our custom global.css
+      config: {
+        applyBaseStyles: false,
+      },
     }),
-    
+
     // Sitemap generation
     sitemap({
       changefreq: 'weekly',
@@ -31,7 +33,7 @@ export default defineConfig({
 
   // Build output
   output: 'static',
-  
+
   // Prefetch for faster navigation
   prefetch: {
     prefetchAll: true,
@@ -49,8 +51,13 @@ export default defineConfig({
 
   // Vite configuration
   vite: {
+    server: {
+      hmr: {
+        overlay: false, // Disable error overlay to prevent Shiki errors
+      },
+    },
     build: {
-      cssMinify: 'lightningcss',
+      // cssMinify: 'lightningcss',
       rollupOptions: {
         output: {
           manualChunks: {
@@ -62,7 +69,7 @@ export default defineConfig({
       },
     },
     css: {
-      transformer: 'lightningcss',
+      // transformer: 'lightningcss',
     },
     ssr: {
       noExternal: ['@gsap/react'],
@@ -76,11 +83,7 @@ export default defineConfig({
 
   // Markdown configuration (for blog)
   markdown: {
-    shikiConfig: {
-      theme: 'github-dark',
-      wrap: true,
-      langs: Object.keys(bundledLanguages),
-    },
+    syntaxHighlight: false,
   },
 
   // Redirects

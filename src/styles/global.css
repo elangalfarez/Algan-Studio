@@ -4,6 +4,11 @@
 @import './tokens.css';
 @import './animations.css';
 
+/* Tailwind CSS Layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* ============================================
    MODERN CSS RESET
    Based on Josh Comeau's CSS Reset
